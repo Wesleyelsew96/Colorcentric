@@ -47,6 +47,44 @@ h1.title {
   float: left;
 }
 
+span.red {
+	color: firebrick;
+}
+span.blue {
+	color: blue;
+}
+span.yellow {
+	color: yellow;
+}
+span.green {
+	color: green;
+}
+span.purple {
+	color: purple;
+}
+span.orange {
+	color: orange;
+}
+span.pink {
+	color: pink;
+}
+span.brown {
+	color: brown;
+}
+span.black {
+	color: black;
+}
+span.gray {
+	color: gray;
+}
+span.white {
+	color: white;
+}
+span.rainbow {
+	// this should be rainbow or something
+	color: aqua;
+}
+
 @include keyframes(move-up) {
   0% {
     top: 25px;
