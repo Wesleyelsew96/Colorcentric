@@ -25,7 +25,7 @@ html, body {
   margin: 0;
   padding: 0;
 
-  background: #Snow;
+  background: mintcream;
   color: $text-color;
   font-family: "Clear Sans", "Helvetica Neue", Arial, sans-serif;
   font-size: 18px;
@@ -45,44 +45,6 @@ h1.title {
   margin: 0;
   display: block;
   float: left;
-}
-
-span.red {
-	color: firebrick;
-}
-span.blue {
-	color: blue;
-}
-span.yellow {
-	color: yellow;
-}
-span.green {
-	color: green;
-}
-span.purple {
-	color: purple;
-}
-span.orange {
-	color: orange;
-}
-span.pink {
-	color: pink;
-}
-span.brown {
-	color: brown;
-}
-span.black {
-	color: black;
-}
-span.gray {
-	color: gray;
-}
-span.white {
-	color: white;
-}
-span.rainbow {
-	// this should be rainbow or something
-	color: aqua;
 }
 
 @include keyframes(move-up) {
