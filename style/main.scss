@@ -21,11 +21,15 @@ $game-container-background: #bbada0;
 
 $transition-speed: 100ms;
 
+* {
+  Border-style: solid;	
+}
+
 html, body {
   margin: 0;
   padding: 0;
 
-  background: MidnightBlue;
+  background: #faf8ef;
   color: $text-color;
   font-family: "Clear Sans", "Helvetica Neue", Arial, sans-serif;
   font-size: 18px;
