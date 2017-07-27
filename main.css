@@ -1,5 +1,9 @@
 @import url(fonts/amatic.css);
 
+* {
+  border: solid
+}
+
 body {
   margin: 80px 0;
   padding: 0;
