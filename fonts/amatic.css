@@ -1,5 +1,5 @@
 @font-face {
-    font-family: "Amatic";
+    font-family: Amatic;
     src: url('amaticsc-regular-webfont.eot');
     src: url('amaticsc-regular-webfont.eot?#iefix') format('embedded-opentype'),
          url('amaticsc-regular-webfont.woff2') format('woff2'),
@@ -11,7 +11,7 @@
 }
 
 @font-face {
-    font-family: "Amatic";
+    font-family: Amatic;
     src: url('amatic-bold-webfont.eot');
     src: url('amatic-bold-webfont.eot?#iefix') format('embedded-opentype'),
          url('amatic-bold-webfont.woff2') format('woff2'),
