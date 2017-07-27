@@ -1,6 +1,6 @@
 @import url(fonts/amatic.css);
 
-body {
+html, body {
   margin: 0;
   padding: 0;
   background: #ffe6e6;
