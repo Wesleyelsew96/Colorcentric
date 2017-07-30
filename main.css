@@ -1,11 +1,12 @@
 @import url(fonts/amatic.css);
 
+/* html stuff */
 * {
   border: solid
 }
 
 body {
-  margin: 50px 0;
+  margin: 30px 0;
   padding: 0;
   background: #ffe6e6;
   color: #2e1705;
@@ -16,17 +17,105 @@ body {
 .container {
   width: 500px;
   margin: 0 auto;
+  display: block;
 }
 
 h1.title {
   font-size: 100px;
   font-weight: 900;
   font-family: "Amatic", Arial, sans-serif;
-  margin: 0;
-  display: block;
   text-align: center;
+  margin: 0;
 }
 
+.scoreboard-container {
+  position: relative;
+  display: block;
+  color: blue;
+  width: 100%;
+  padding: 0px;
+  vertical-align: top; /* to get rid of line-height space stuff between this and the game container */
+}
+
+.left-scoreboard-container {
+  position: absolute;
+  width: 150px;
+  height: 100%;
+  left: 0;
+  top: 0;
+}
+
+.center-scoreboard-container {
+  position: relative;
+  width: 100;
+  height: 100px;
+  margin-left: 150px;
+  margin-right: 150px;
+}
+
+.right-scoreboard-container {
+  position: absolute;
+  width: 150px;
+  height: 100%;
+  right: 0;
+  top: 0;
+}
+
+.current-container, .best-container, .restart-container {
+  position: absolute;
+  border: solid;
+  border-color: #666666;
+  border-width: 2px;
+  padding: 5px 15px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 4px;
+  color: white;
+  text-align: center;
+  height: 20px;
+  width: auto;
+}
+
+.current-container {
+  background: #bbada0;
+  bottom: 10px;
+  right: 0px;
+}
+
+.restart-container {
+  background: #800000;
+  bottom: 10px;
+  left: 0px;
+}
+
+.best-container {
+  background: #bbada0;
+  bottom: 54px;
+  right: 0px;
+}
+
+p {
+  margin-top: 0;
+}
+
+a {
+  color: #776e65;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+strong.important {
+  text-transform: uppercase;
+}
+
+hr {
+  border: none;
+  border-bottom: 1px solid #d8d4d0;
+  margin-top: 20px;
+  margin-bottom: 30px;
+}
+
+/* Keyframe stuff */
 @-webkit-keyframes move-up {
   0% {
     top: 25px;
@@ -63,68 +152,6 @@ h1.title {
   }
 }
 
-.scores-container {
-  position: relative;
-  float: left;
-  display: inline-block;
-  color: blue;
-  min-height: 150px;
-}
-
-.current-container, .best-container {
-  position: absolute;
-  float: right;
-  display: inline-block;
-  background: #bbada0;
-  padding: 10px 20px;
-  font-size: 20px;
-  font-weight: bold;
-  height: 20px;
-  border-radius: 3px;
-  color: white;
-  margin-top: 0px;
-  text-align: center;
-}
-
-.best-container {
-  top: 50px;
-}
-
-#current-score, #best-score {
-  position: absolute;
-  width: 100%;
-  top: 10px;
-  left: 0;
-  text-transform: uppercase;
-  font-size: 13px;
-  line-height: 13px;
-  text-align: center;
-  color: #eee4da;
-}
-
-p {
-  margin-top: 0;
-  margin-bottom: 10px;
-}
-
-a {
-  color: #776e65;
-  font-weight: bold;
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-strong.important {
-  text-transform: uppercase;
-}
-
-hr {
-  border: none;
-  border-bottom: 1px solid #d8d4d0;
-  margin-top: 20px;
-  margin-bottom: 30px;
-}
-
 @-webkit-keyframes fade-in {
   0% {
     opacity: 0;
@@ -156,7 +183,8 @@ hr {
 }
 
 .game-container {
-  margin-top: 40px;
+  margin: 0;
+  display: block;
   position: static;
   padding: 15px;
   cursor: default;
@@ -237,35 +265,96 @@ hr {
 }
 
 .grid-container {
-  position: static;
+  position: relative;
   z-index: 1;
 }
 
-.grid-row {
-  margin-bottom: 15px;
-}
-
-.grid-row:last-child {
-  margin-bottom: 0;
-}
-
-.grid-row:after {
-  content: "";
-  display: block;
-  clear: both;
-}
-
 .grid-cell {
+  position: absolute;
   width: 106.25px;
   height: 106.25px;
-  margin-right: 15px;
-  float: left;
   border-radius: 3px;
   background: rgba(238, 228, 218, 0.35);
 }
 
-.grid-cell:last-child {
-  margin-right: 0;
+#grid-cell-1.grid-cell, {
+  margin-top: 15px;
+  margin-left: 15px;
+}
+
+#grid-cell-2.grid-cell, {
+  margin-top: 15px;
+  margin-left: 136.25px;
+}
+
+#grid-cell-3, {
+  top: 15px;
+  left: 257.5px;
+}
+
+#grid-cell-4, {
+  top: 15px;
+  left: 378.75px;
+}
+
+#grid-cell-5, {
+  top: 136.25px;
+  left: 15px;
+}
+
+#grid-cell-6, {
+  top: 136.25px;
+  left: 136.25px;
+}
+
+#grid-cell-7, {
+  top: 136.25px;
+  left: 257.5px;
+}
+
+#grid-cell-8, {
+  top: 136.25px;
+  left: 378.75px;
+}
+
+#grid-cell-9, {
+  top: 257.5px;
+  left: 15px;
+}
+
+#grid-cell-10, {
+  top: 257.5px;
+  left: 136.25px;
+}
+
+#grid-cell-11, {
+  top: 257.5px;
+  left: 257.5px;
+}
+
+#grid-cell-12, {
+  top: 257.5px;
+  left: 378.75px;
+}
+
+#grid-cell-13, {
+  top: 378.75px;
+  left: 15px;
+}
+
+#grid-cell-14, {
+  top: 378.75px;
+  left: 136.25px;
+}
+
+#grid-cell-15, {
+  top: 378.75px;
+  left: 257.5px;
+}
+
+#grid-cell-16, {
+  top: 378.75px;
+  left: 378.75px;
 }
 
 .tile-container {
@@ -656,20 +745,6 @@ hr {
   animation-fill-mode: backwards;
 }
 
-.restart-button {
-  display: inline-block;
-  background: #8f7a66;
-  border-radius: 3px;
-  padding: 0 20px;
-  text-decoration: none;
-  color: #f9f6f2;
-  height: 40px;
-  line-height: 42px;
-  display: inline-block;
-  text-align: center;
-  float: right;
-}
-
 @media screen and (max-width: 520px) {
   html, body {
     font-size: 15px;
@@ -690,14 +765,10 @@ hr {
     margin: 0 auto;
   }
 
-  .current-container, .best-container {
+  .current-container, .best-container, restart.container {
     margin-top: 0;
     padding: 15px 10px;
     min-width: 40px;
-  }
-
-  .heading {
-    margin-bottom: 10px;
   }
 
   .restart-button {
