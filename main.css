@@ -1,9 +1,9 @@
 @import url(fonts/amatic.css);
 
 /* html stuff */
-* {
+/* {
   border: solid
-}
+} */
 
 body {
   margin: 30px 0;
@@ -186,7 +186,6 @@ hr {
   margin: 0;
   display: block;
   position: static;
-  padding: 15px;
   cursor: default;
   -webkit-touch-callout: none;
   -ms-touch-callout: none;
@@ -204,9 +203,9 @@ hr {
   box-sizing: border-box;
 }
 
-.game-container .game-message {
+.game-container .postgame-message {
   display: none;
-  position: static;
+  position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
@@ -222,7 +221,7 @@ hr {
   animation-fill-mode: both;
 }
 
-.game-container .game-message p {
+.game-container .postgame-message p {
   font-size: 60px;
   font-weight: bold;
   height: 60px;
@@ -230,12 +229,12 @@ hr {
   margin-top: 222px;
 }
 
-.game-container .game-message .lower {
+.game-container .postgame-message .lower {
   display: block;
   margin-top: 59px;
 }
 
-.game-container .game-message a {
+.game-container .postgame-message a {
   display: block;
   background: #8f7a66;
   border-radius: 3px;
@@ -247,25 +246,25 @@ hr {
   margin-left: 9px;
 }
 
-.game-container .game-message a.keep-playing-button {
+.game-container .postgame-message a.keep-playing-button {
   display: none;
 }
 
-.game-container .game-message.game-won {
+.game-container .postgame-message.game-won {
   background: rgba(237, 194, 46, 0.5);
   color: #f9f6f2;
 }
 
-.game-container .game-message.game-won a.keep-playing-button {
+.game-container .postgame-message.game-won a.keep-playing-button {
   display: block;
 }
 
-.game-container .game-message.game-won, .game-container .game-message.game-over {
+.game-container .postgame-message.game-won, .game-container .postgame-message.game-over {
   display: block;
 }
 
-.grid-container {
-  position: relative;
+#grid-container {
+  position: absolute;
   z-index: 1;
 }
 
@@ -277,82 +276,82 @@ hr {
   background: rgba(238, 228, 218, 0.35);
 }
 
-#grid-cell-1.grid-cell, {
-  margin-top: 15px;
-  margin-left: 15px;
+#grid-cell-1 {
+  top: 15px;
+  left: 15px;
 }
 
-#grid-cell-2.grid-cell, {
-  margin-top: 15px;
-  margin-left: 136.25px;
+#grid-cell-2 {
+  top: 15px;
+  left: 136.25px;
 }
 
-#grid-cell-3, {
+#grid-cell-3 {
   top: 15px;
   left: 257.5px;
 }
 
-#grid-cell-4, {
+#grid-cell-4 {
   top: 15px;
   left: 378.75px;
 }
 
-#grid-cell-5, {
+#grid-cell-5 {
   top: 136.25px;
   left: 15px;
 }
 
-#grid-cell-6, {
+#grid-cell-6 {
   top: 136.25px;
   left: 136.25px;
 }
 
-#grid-cell-7, {
+#grid-cell-7 {
   top: 136.25px;
   left: 257.5px;
 }
 
-#grid-cell-8, {
+#grid-cell-8 {
   top: 136.25px;
   left: 378.75px;
 }
 
-#grid-cell-9, {
+#grid-cell-9 {
   top: 257.5px;
   left: 15px;
 }
 
-#grid-cell-10, {
+#grid-cell-10 {
   top: 257.5px;
   left: 136.25px;
 }
 
-#grid-cell-11, {
+#grid-cell-11 {
   top: 257.5px;
   left: 257.5px;
 }
 
-#grid-cell-12, {
+#grid-cell-12 {
   top: 257.5px;
   left: 378.75px;
 }
 
-#grid-cell-13, {
+#grid-cell-13 {
   top: 378.75px;
   left: 15px;
 }
 
-#grid-cell-14, {
+#grid-cell-14 {
   top: 378.75px;
   left: 136.25px;
 }
 
-#grid-cell-15, {
+#grid-cell-15 {
   top: 378.75px;
   left: 257.5px;
 }
 
-#grid-cell-16, {
+#grid-cell-16 {
   top: 378.75px;
   left: 378.75px;
 }
@@ -800,7 +799,7 @@ hr {
     box-sizing: border-box;
   }
 
-  .game-container .game-message {
+  .game-container .postgame-message {
     display: none;
     position: absolute;
     top: 0;
@@ -818,7 +817,7 @@ hr {
     animation-fill-mode: both;
   }
 
-  .game-container .game-message p {
+  .game-container .postgame-message p {
     font-size: 60px;
     font-weight: bold;
     height: 60px;
@@ -826,12 +825,12 @@ hr {
     margin-top: 222px;
   }
 
-  .game-container .game-message .lower {
+  .game-container .postgame-message .lower {
     display: block;
     margin-top: 59px;
   }
 
-  .game-container .game-message a {
+  .game-container .postgame-message a {
     display: block;
     background: #8f7a66;
     border-radius: 3px;
@@ -843,24 +842,24 @@ hr {
     margin-left: 9px;
   }
 
-  .game-container .game-message a.keep-playing-button {
+  .game-container .postgame-message a.keep-playing-button {
     display: none;
   }
 
-  .game-container .game-message.game-won {
+  .game-container .postgame-message.game-won {
     background: rgba(237, 194, 46, 0.5);
     color: #f9f6f2;
   }
 
-  .game-container .game-message.game-won a.keep-playing-button {
+  .game-container .postgame-message.game-won a.keep-playing-button {
     display: block;
   }
 
-  .game-container .game-message.game-won, .game-container .game-message.game-over {
+  .game-container .postgame-message.game-won, .game-container .postgame-message.game-over {
     display: block;
   }
 
-  .grid-container {
+  #grid-container {
     position: absolute;
     z-index: 1;
   }
@@ -1019,14 +1018,14 @@ hr {
     font-size: 35px;
   }
 
-  .game-message p {
+  .postgame-message p {
     font-size: 30px !important;
     height: 30px !important;
     line-height: 30px !important;
     margin-top: 90px !important;
   }
 
-  .game-message .lower {
+  .postgame-message .lower {
     margin-top: 30px !important;
   }
 }
