@@ -18,3 +18,22 @@ FIXES
 * Fixed the score so that it resets when "New Game" is clicked
 
 -------------------------
+
+Alpha-3:
+
+UPDATES
+* Player can no longer make a move that wouldn't move any tiles
+
+FIXES
+* The center tile now correctly becomes the indicated tile on top, so you can plan your moves accordingly
+* Fixed a bug that caused colors that were already achieved to no longer appear at the top
+
+-------------------------
+
+Alpha-4:
+
+UPDATES
+* When the game ends, a screen appears that prompts the user to restart //TODO
+
+FIXES
+

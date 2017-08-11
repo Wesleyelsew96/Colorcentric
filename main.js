@@ -8,6 +8,7 @@ $(document).ready(function (e) {
     var timeoutIdArray = []; // The array of timeout IDs
     var createdTile;
     var gameOver = false;
+    var futureColor = "red"; // probably just default
     var colorArray = [];
     var tileArray = [[null, null, null, null],
                      [null, null, null, null],
@@ -46,6 +47,19 @@ $(document).ready(function (e) {
             }
         }
 
+        // Set the colors
+        yellowActivated = false;
+        greenActivated = false;
+        purpleActivated = false;
+        orangeActivated = false;
+        pinkActivated = false;
+        tealActivated = false;
+        brownActivated = false;
+        grayActivated = false;
+        blackActivated = false;
+        whiteActivated = false;
+
+
         // Reset the color array
         colorArray = [];
         colorArray.push("red");
@@ -64,6 +78,9 @@ $(document).ready(function (e) {
 
         // Make the real future tile at the top
         newFutureTile();
+
+        // Make the first center tile
+        newCenterTile("red");
     }
 
     // Add a new tile
@@ -130,21 +147,19 @@ $(document).ready(function (e) {
         $activeTile.hide().fadeIn("fast");
 
         // Pick a color for the future tile
-        var futureColor = pickColor();
+        futureColor = pickColor();
         document.getElementById("future-tile").style.backgroundColor = futureColor;
-
-        newCenterTile(futureColor);
     }
 
     // The center tile
-    function newCenterTile(color) {
+    function newCenterTile() {
 
         // Access the tile with jquery
         var $activeTile = $("#center-tile");
         $activeTile.hide().fadeIn("fast");
 
         // Assign the picked color to the center tile
-        document.getElementById("center-tile").style.backgroundColor = color;
+        document.getElementById("center-tile").style.backgroundColor = futureColor;
     }
 
     // Pick a random color from the available options
@@ -164,21 +179,24 @@ $(document).ready(function (e) {
         // Clear the old timeoutIds
         removeTilesEarly();
 
+        // Log the old tileArray
+        var newTileArray = _.cloneDeep(tileArray);
+
         // Move tiles depending on which key is pressed
         if (e.keyCode == 40) {
             moveTilesDown();
-            setTimeout(function () { newTile() }, 100); // Change this to toggle the cheap strat in 2048
         }
         if (e.keyCode == 38) {
             moveTilesUp();
-            setTimeout(function () { newTile() }, 100); // Change this to toggle the cheap strat in 2048
         }
         if (e.keyCode == 39) {
             moveTilesRight();
-            setTimeout(function () { newTile() }, 100); // Change this to toggle the cheap strat in 2048
         }
         if (e.keyCode == 37) {
             moveTilesLeft();
+        }
+
+        if (JSON.stringify(newTileArray) != JSON.stringify(tileArray)) {
             setTimeout(function () { newTile() }, 100); // Change this to toggle the cheap strat in 2048
         }
 
@@ -190,9 +208,14 @@ $(document).ready(function (e) {
             document.getElementById("best-score").innerHTML = parseInt(document.getElementById("current-score").innerHTML);
         }
 
-        // Check to see if a new futureColor is needed
-        if (timeoutIdArray.length > 0) {
+        // Create a new future tile color
+        if (JSON.stringify(newTileArray) != JSON.stringify(tileArray)) {
             setTimeout(newFutureTile, 100);
+        }
+
+        // Check to create a new center tile
+        if (timeoutIdArray.length > 0) {
+            setTimeout(newCenterTile, 99);
         }
 
         // Erase the old array of removed tiles
