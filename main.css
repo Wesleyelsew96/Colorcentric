@@ -60,7 +60,7 @@ h1.title {
   top: 0;
 }
 
-.current-container, .best-container, .restart-container {
+.current-container, .best-container, .restart-button {
   position: absolute;
   border: solid;
   border-color: #666666;
@@ -81,7 +81,7 @@ h1.title {
   right: 0px;
 }
 
-.restart-container {
+.restart-button {
   background: #800000;
   bottom: 10px;
   left: 0px;
@@ -202,63 +202,60 @@ hr {
   box-sizing: border-box;
 }
 
-.game-container .postgame-message {
+#postgame-message {
   display: none;
   position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  width: 500px;
+  height: 500px;
   background: rgba(238, 228, 218, 0.5);
   text-align: center;
-  -webkit-animation: fade-in 800ms ease 1200ms;
+  /*-webkit-animation: fade-in 800ms ease 1200ms;
   -moz-animation: fade-in 800ms ease 1200ms;
   animation: fade-in 800ms ease 1200ms;
   -webkit-animation-fill-mode: both;
   -moz-animation-fill-mode: both;
-  animation-fill-mode: both;
+  animation-fill-mode: both;*/
+  z-index: 5;
 }
 
-.game-container .postgame-message p {
-  font-size: 60px;
-  font-weight: bold;
-  height: 60px;
-  line-height: 60px;
-  margin-top: 222px;
-}
-
-.game-container .postgame-message .lower {
+.lower {
   display: block;
-  margin-top: 59px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 200px;
+  height: auto;
 }
 
-.game-container .postgame-message a {
-  display: block;
-  background: #8f7a66;
-  border-radius: 3px;
-  padding: 0 20px;
-  text-decoration: none;
-  color: #f9f6f2;
-  height: 40px;
-  line-height: 42px;
-  margin-left: 9px;
+.lower .restart-button {
+  left: auto;
+  margin-left: 0px;
+  position: relative;
+  top: 10px;
 }
 
-.game-container .postgame-message a.keep-playing-button {
+a.keep-playing-button {
   display: none;
 }
 
-.game-container .postgame-message.game-won {
+#postgame-message.game-won {
   background: rgba(237, 194, 46, 0.5);
   color: #f9f6f2;
 }
 
-.game-container .postgame-message.game-won a.keep-playing-button {
+#postgame-message.game-won a.keep-playing-button {
   display: block;
 }
 
-.game-container .postgame-message.game-won, .game-container .postgame-message.game-over {
+#game-over {
+  margin-top: 150px;
   display: block;
+  font-size: 60px;
+  font-weight: bold;
+}
+
+#endgame-score {
+  display: block;
+  font-size: 40px;
 }
 
 #grid-container {
@@ -473,230 +470,8 @@ hr {
   margin-top: 25px;
 }
 
-.tile.tile-position-1-1 {
-  -webkit-transform: translate(0px, 0px);
-  -moz-transform: translate(0px, 0px);
-  -ms-transform: translate(0px, 0px);
-  transform: translate(0px, 0px);
-}
 
-.tile.tile-position-1-2 {
-  -webkit-transform: translate(0px, 121px);
-  -moz-transform: translate(0px, 121px);
-  -ms-transform: translate(0px, 121px);
-  transform: translate(0px, 121px);
-}
 
-.tile.tile-position-1-3 {
-  -webkit-transform: translate(0px, 242px);
-  -moz-transform: translate(0px, 242px);
-  -ms-transform: translate(0px, 242px);
-  transform: translate(0px, 242px);
-}
-
-.tile.tile-position-1-4 {
-  -webkit-transform: translate(0px, 363px);
-  -moz-transform: translate(0px, 363px);
-  -ms-transform: translate(0px, 363px);
-  transform: translate(0px, 363px);
-}
-
-.tile.tile-position-2-1 {
-  -webkit-transform: translate(121px, 0px);
-  -moz-transform: translate(121px, 0px);
-  -ms-transform: translate(121px, 0px);
-  transform: translate(121px, 0px);
-}
-
-.tile.tile-position-2-2 {
-  -webkit-transform: translate(121px, 121px);
-  -moz-transform: translate(121px, 121px);
-  -ms-transform: translate(121px, 121px);
-  transform: translate(121px, 121px);
-}
-
-.tile.tile-position-2-3 {
-  -webkit-transform: translate(121px, 242px);
-  -moz-transform: translate(121px, 242px);
-  -ms-transform: translate(121px, 242px);
-  transform: translate(121px, 242px); }
-.tile.tile-position-2-4 {
-  -webkit-transform: translate(121px, 363px);
-  -moz-transform: translate(121px, 363px);
-  -ms-transform: translate(121px, 363px);
-  transform: translate(121px, 363px);
-}
-
-.tile.tile-position-3-1 {
-  -webkit-transform: translate(242px, 0px);
-  -moz-transform: translate(242px, 0px);
-  -ms-transform: translate(242px, 0px);
-  transform: translate(242px, 0px);
-}
-
-.tile.tile-position-3-2 {
-  -webkit-transform: translate(242px, 121px);
-  -moz-transform: translate(242px, 121px);
-  -ms-transform: translate(242px, 121px);
-  transform: translate(242px, 121px);
-}
-
-.tile.tile-position-3-3 {
-  -webkit-transform: translate(242px, 242px);
-  -moz-transform: translate(242px, 242px);
-  -ms-transform: translate(242px, 242px);
-  transform: translate(242px, 242px);
-}
-
-.tile.tile-position-3-4 {
-  -webkit-transform: translate(242px, 363px);
-  -moz-transform: translate(242px, 363px);
-  -ms-transform: translate(242px, 363px);
-  transform: translate(242px, 363px);
-}
-
-.tile.tile-position-4-1 {
-  -webkit-transform: translate(363px, 0px);
-  -moz-transform: translate(363px, 0px);
-  -ms-transform: translate(363px, 0px);
-  transform: translate(363px, 0px);
-}
-
-.tile.tile-position-4-2 {
-  -webkit-transform: translate(363px, 121px);
-  -moz-transform: translate(363px, 121px);
-  -ms-transform: translate(363px, 121px);
-  transform: translate(363px, 121px);
-}
-
-.tile.tile-position-4-3 {
-  -webkit-transform: translate(363px, 242px);
-  -moz-transform: translate(363px, 242px);
-  -ms-transform: translate(363px, 242px);
-  transform: translate(363px, 242px);
-}
-
-.tile.tile-position-4-4 {
-  -webkit-transform: translate(363px, 363px);
-  -moz-transform: translate(363px, 363px);
-  -ms-transform: translate(363px, 363px);
-  transform: translate(363px, 363px);
-}
-
-.tile .tile-inner {
-  border-radius: 3px;
-  background: #eee4da;
-  text-align: center;
-  font-weight: bold;
-  z-index: 10;
-  font-size: 55px;
-}
-
-.tile.tile-2 .tile-inner {
-  background: #eee4da;
-  box-shadow: 0 0 30px 10px rgba(243, 215, 116, 0), inset 0 0 0 1px rgba(255, 255, 255, 0);
-}
-
-.tile.tile-4 .tile-inner {
-  background: #ede0c8;
-  box-shadow: 0 0 30px 10px rgba(243, 215, 116, 0), inset 0 0 0 1px rgba(255, 255, 255, 0);
-}
-
-.tile.tile-8 .tile-inner {
-    color: #f9f6f2;
-    background: #f2b179;
-}
-
-.tile.tile-16 .tile-inner {
-    color: #f9f6f2;
-    background: #f59563;
-}
-
-.tile.tile-32 .tile-inner {
-  color: #f9f6f2;
-  background: #f67c5f;
-}
-
-.tile.tile-64 .tile-inner {
-  color: #f9f6f2;
-  background: #f65e3b;
-}
-
-.tile.tile-128 .tile-inner {
-  color: #f9f6f2;
-  background: #edcf72;
-  box-shadow: 0 0 30px 10px rgba(243, 215, 116, 0.2381), inset 0 0 0 1px rgba(255, 255, 255, 0.14286);
-  font-size: 45px;
-}
-
-@media screen and (max-width: 520px) {
-  .tile.tile-128 .tile-inner {
-    font-size: 25px;
-  }
-}
-
-.tile.tile-256 .tile-inner {
-  color: #f9f6f2;
-  background: #edcc61;
-  box-shadow: 0 0 30px 10px rgba(243, 215, 116, 0.31746), inset 0 0 0 1px rgba(255, 255, 255, 0.19048);
-  font-size: 45px;
-}
-
-@media screen and (max-width: 520px) {
-  .tile.tile-256 .tile-inner {
-    font-size: 25px;
-  }
-}
-
-.tile.tile-512 .tile-inner {
-  color: #f9f6f2;
-  background: #edc850;
-  box-shadow: 0 0 30px 10px rgba(243, 215, 116, 0.39683), inset 0 0 0 1px rgba(255, 255, 255, 0.2381);
-  font-size: 45px;
-}
-
-@media screen and (max-width: 520px) {
-  .tile.tile-512 .tile-inner {
-    font-size: 25px;
-  }
-}
-
-.tile.tile-1024 .tile-inner {
-  color: #f9f6f2;
-  background: #edc53f;
-  box-shadow: 0 0 30px 10px rgba(243, 215, 116, 0.47619), inset 0 0 0 1px rgba(255, 255, 255, 0.28571);
-  font-size: 35px;
-}
-
-@media screen and (max-width: 520px) {
-  .tile.tile-1024 .tile-inner {
-    font-size: 15px;
-  }
-}
-
-.tile.tile-2048 .tile-inner {
-  color: #f9f6f2;
-  background: #edc22e;
-  box-shadow: 0 0 30px 10px rgba(243, 215, 116, 0.55556), inset 0 0 0 1px rgba(255, 255, 255, 0.33333);
-  font-size: 35px;
-}
-
-@media screen and (max-width: 520px) {
-  .tile.tile-2048 .tile-inner {
-    font-size: 15px;
-  }
-}
-.tile.tile-super .tile-inner {
-  color: #f9f6f2;
-  background: #3c3a32;
-  font-size: 30px;
-}
-
-@media screen and (max-width: 520px) {
-  .tile.tile-super .tile-inner {
-    font-size: 10px;
-  }
-}
 
 @-webkit-keyframes appear {
   0% {
@@ -752,14 +527,7 @@ hr {
   }
 }
 
-.tile-new .tile-inner {
-  -webkit-animation: appear 200ms ease 100ms;
-  -moz-animation: appear 200ms ease 100ms;
-  animation: appear 200ms ease 100ms;
-  -webkit-animation-fill-mode: backwards;
-  -moz-animation-fill-mode: backwards;
-  animation-fill-mode: backwards;
-}
+
 
 @-webkit-keyframes pop {
   0% {
@@ -830,15 +598,6 @@ hr {
   }
 }
 
-.tile-merged .tile-inner {
-  z-index: 20;
-  -webkit-animation: pop 200ms ease 100ms;
-  -moz-animation: pop 200ms ease 100ms;
-  animation: pop 200ms ease 100ms;
-  -webkit-animation-fill-mode: backwards;
-  -moz-animation-fill-mode: backwards;
-  animation-fill-mode: backwards;
-}
 
 @media screen and (max-width: 520px) {
   html, body {
@@ -895,13 +654,8 @@ hr {
     box-sizing: border-box;
   }
 
-  .game-container .postgame-message {
+  .game-container #postgame-message {
     display: none;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
     background: rgba(238, 228, 218, 0.5);
     z-index: 100;
     text-align: center;
@@ -913,20 +667,18 @@ hr {
     animation-fill-mode: both;
   }
 
-  .game-container .postgame-message p {
+  .game-container #postgame-message {
     font-size: 60px;
     font-weight: bold;
     height: 60px;
     line-height: 60px;
-    margin-top: 222px;
   }
 
-  .game-container .postgame-message .lower {
+  .lower {
     display: block;
-    margin-top: 59px;
   }
 
-  .game-container .postgame-message a {
+  .game-container #postgame-message a {
     display: block;
     background: #8f7a66;
     border-radius: 3px;
@@ -938,20 +690,20 @@ hr {
     margin-left: 9px;
   }
 
-  .game-container .postgame-message a.keep-playing-button {
+  .game-container #postgame-message a.keep-playing-button {
     display: none;
   }
 
-  .game-container .postgame-message.game-won {
+  .game-container #postgame-message.game-won {
     background: rgba(237, 194, 46, 0.5);
     color: #f9f6f2;
   }
 
-  .game-container .postgame-message.game-won a.keep-playing-button {
+  .game-container #postgame-message.game-won a.keep-playing-button {
     display: block;
   }
 
-  .game-container .postgame-message.game-won, .game-container .postgame-message.game-over {
+  .game-container #postgame-message.game-won, .game-container #postgame-message.game-over {
     display: block;
   }
 
@@ -992,136 +744,14 @@ hr {
     z-index: 2;
   }
 
-  .tile, .tile .tile-inner {
-    width: 58px;
-    height: 58px;
-    line-height: 58px;
-  }
-
-  .tile.tile-position-1-1 {
-    -webkit-transform: translate(0px, 0px);
-    -moz-transform: translate(0px, 0px);
-    -ms-transform: translate(0px, 0px);
-    transform: translate(0px, 0px);
-  }
-
-  .tile.tile-position-1-2 {
-    -webkit-transform: translate(0px, 67px);
-    -moz-transform: translate(0px, 67px);
-    -ms-transform: translate(0px, 67px);
-    transform: translate(0px, 67px);
-  }
-
-  .tile.tile-position-1-3 {
-    -webkit-transform: translate(0px, 135px);
-    -moz-transform: translate(0px, 135px);
-    -ms-transform: translate(0px, 135px);
-    transform: translate(0px, 135px);
-  }
-
-  .tile.tile-position-1-4 {
-    -webkit-transform: translate(0px, 202px);
-    -moz-transform: translate(0px, 202px);
-    -ms-transform: translate(0px, 202px);
-    transform: translate(0px, 202px);
-  }
-
-  .tile.tile-position-2-1 {
-    -webkit-transform: translate(67px, 0px);
-    -moz-transform: translate(67px, 0px);
-    -ms-transform: translate(67px, 0px);
-    transform: translate(67px, 0px);
-  }
-
-  .tile.tile-position-2-2 {
-    -webkit-transform: translate(67px, 67px);
-    -moz-transform: translate(67px, 67px);
-    -ms-transform: translate(67px, 67px);
-    transform: translate(67px, 67px);
-  }
-
-  .tile.tile-position-2-3 {
-    -webkit-transform: translate(67px, 135px);
-    -moz-transform: translate(67px, 135px);
-    -ms-transform: translate(67px, 135px);
-    transform: translate(67px, 135px);
-  }
-
-  .tile.tile-position-2-4 {
-    -webkit-transform: translate(67px, 202px);
-    -moz-transform: translate(67px, 202px);
-    -ms-transform: translate(67px, 202px);
-    transform: translate(67px, 202px);
-  }
-
-  .tile.tile-position-3-1 {
-    -webkit-transform: translate(135px, 0px);
-    -moz-transform: translate(135px, 0px);
-    -ms-transform: translate(135px, 0px);
-    transform: translate(135px, 0px);
-  }
-
-  .tile.tile-position-3-2 {
-    -webkit-transform: translate(135px, 67px);
-    -moz-transform: translate(135px, 67px);
-    -ms-transform: translate(135px, 67px);
-    transform: translate(135px, 67px);
-  }
-
-  .tile.tile-position-3-3 {
-    -webkit-transform: translate(135px, 135px);
-    -moz-transform: translate(135px, 135px);
-    -ms-transform: translate(135px, 135px);
-    transform: translate(135px, 135px);
-  }
-
-  .tile.tile-position-3-4 {
-    -webkit-transform: translate(135px, 202px);
-    -moz-transform: translate(135px, 202px);
-    -ms-transform: translate(135px, 202px);
-    transform: translate(135px, 202px);
-  }
-
-  .tile.tile-position-4-1 {
-    -webkit-transform: translate(202px, 0px);
-    -moz-transform: translate(202px, 0px);
-    -ms-transform: translate(202px, 0px);
-    transform: translate(202px, 0px);
-  }
-
-  .tile.tile-position-4-2 {
-    -webkit-transform: translate(202px, 67px);
-    -moz-transform: translate(202px, 67px);
-    -ms-transform: translate(202px, 67px);
-    transform: translate(202px, 67px);
-  }
-
-  .tile.tile-position-4-3 {
-    -webkit-transform: translate(202px, 135px);
-    -moz-transform: translate(202px, 135px);
-    -ms-transform: translate(202px, 135px);
-    transform: translate(202px, 135px);
-  }
-
-  .tile.tile-position-4-4 {
-    -webkit-transform: translate(202px, 202px);
-    -moz-transform: translate(202px, 202px);
-    -ms-transform: translate(202px, 202px);
-    transform: translate(202px, 202px);
-  }
-
-  .tile .tile-inner {
-    font-size: 35px;
-  }
-
-  .postgame-message p {
+  #postgame-message p {
     font-size: 30px !important;
     height: 30px !important;
     line-height: 30px !important;
     margin-top: 90px !important;
   }
 
-  .postgame-message .lower {
+  #postgame-message .lower {
     margin-top: 30px !important;
   }
 }

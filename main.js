@@ -1,5 +1,3 @@
-
-
 $(document).ready(function (e) {
     e.stopPropagation;
 
@@ -7,8 +5,13 @@ $(document).ready(function (e) {
     var timeoutId; // The id for setTimeouts in the code
     var timeoutIdArray = []; // The array of timeout IDs
     var createdTile;
+    var centerBackground = "red"; // probably just default
+    var edgeNoCorners = 0;
+    var edgeFull = false;
+    var cornersFull = false;
     var gameOver = false;
     var futureColor = "red"; // probably just default
+    var doubleColor = "red"; // probably just default
     var colorArray = [];
     var tileArray = [[null, null, null, null],
                      [null, null, null, null],
@@ -31,11 +34,18 @@ $(document).ready(function (e) {
     newGame();
 
 
-    $(".restart-container").click(newGame);
+    $(".restart-button").click(newGame);
 
 
     // Start a new game
     function newGame() {
+
+        edgeFull = false;
+        cornersFull = false;
+        gameOver = false;
+
+        // Remove the gameover overlay
+        document.getElementById("postgame-message").style.display = "none";
 
         // Clear the board
         for (var row = 0; row <= 3; row++) {
@@ -65,8 +75,9 @@ $(document).ready(function (e) {
         colorArray.push("red");
         colorArray.push("blue");
 
-        // Reset score
+        // Reset scores
         document.getElementById("current-score").innerHTML = "0";
+        document.getElementById("gameover-score").innerHTML = "0";
 
         // Make a random "old" future tile and add a tile to the board of that color
         newFutureTile();
@@ -83,102 +94,7 @@ $(document).ready(function (e) {
         newCenterTile("red");
     }
 
-    // Add a new tile
-    function newTile() {
-
-        // Create a new tile
-        createdTile = document.createElement("div");
-
-        createdTile.setAttribute("position", "absolute");
-        createdTile.setAttribute("class", "tile");
-
-        // Find the empty corners
-        var emptyCorners = [];
-        if (!tileArray[0][0]) {
-            emptyCorners.push("tile-1");
-        }
-        if (!tileArray[0][3]) {
-            emptyCorners.push("tile-4");
-        }
-        if (!tileArray[3][0]) {
-            emptyCorners.push("tile-13");
-        }
-        if (!tileArray[3][3]) {
-            emptyCorners.push("tile-16");
-        }
-
-        // Of the empty corners, pick a corner for the tile to go into
-        var newTileCorner = Math.floor(Math.random() * emptyCorners.length);
-
-        if (emptyCorners.length > 0) {
-            // Pick a corner to put the tile in
-            createdTile.setAttribute("id", emptyCorners[newTileCorner]);
-
-            // Insert the tile into the corner
-            $("#tile-container").append(createdTile);
-
-            // Insert the tile into the array of tiles
-            if (emptyCorners[newTileCorner] == "tile-1") {
-                tileArray[0][0] = createdTile;
-            } else if (emptyCorners[newTileCorner] == "tile-4") {
-                tileArray[0][3] = createdTile;
-            } else if (emptyCorners[newTileCorner] == "tile-13") {
-                tileArray[3][0] = createdTile;
-            } else if (emptyCorners[newTileCorner] == "tile-16") {
-                tileArray[3][3] = createdTile;
-            }
-
-            // Access the tile with jquery
-            var $activeTile = $("#" + createdTile.id);
-            $activeTile.hide().fadeIn("fast");
-
-            // Make the new tile the same color as the old future tile
-            $activeTile.css("background-color", document.getElementById("future-tile").style.backgroundColor);
-        } else {
-            gameOver = true;
-        }
-    };
-
-    // The future tile
-    function newFutureTile() {
-        
-        // Access the tile with jquery
-        var $activeTile = $("#future-tile");
-        $activeTile.hide().fadeIn("fast");
-
-        // Pick a color for the future tile
-        futureColor = pickColor();
-        document.getElementById("future-tile").style.backgroundColor = futureColor;
-    }
-
-    // The center tile
-    function newCenterTile() {
-
-        // Access the tile with jquery
-        var $activeTile = $("#center-tile");
-        $activeTile.hide().fadeIn("fast");
-
-        // Assign the picked color to the center tile
-        document.getElementById("center-tile").style.backgroundColor = futureColor;
-    }
-
-    // Pick a random color from the available options
-    function pickColor() {
-        if (colorArray.length > 0) {
-            var oldColorIndex = colorArray.indexOf(document.getElementById("center-tile").style.backgroundColor);
-            if (oldColorIndex > -1) {
-                var oldColor = colorArray[oldColorIndex];
-                colorArray.splice(oldColorIndex, 1);
-            }
-            var colorToReturn = colorArray[Math.floor(Math.random() * colorArray.length)];
-            if (oldColorIndex > -1) {
-                colorArray.push(oldColor);
-            }
-            return colorToReturn;
-        } else {
-            return colorArray[Math.floor(Math.random() * colorArray.length)];
-        }
-    }
+/* These events happen when you press a key */
 
     // Make a move
     $(document).keydown(function (e) {
@@ -209,12 +125,16 @@ $(document).ready(function (e) {
             moveTilesLeft();
         }
 
+        // Check for the "SUPER" removal, when a double is achieved
+        checkDoubles();
+
         if (JSON.stringify(newTileArray) != JSON.stringify(tileArray)) {
             setTimeout(function () { newTile() }, 100); // Change this to toggle the cheap strat in 2048
         }
 
         // Update the score
         document.getElementById("current-score").innerHTML = parseInt(document.getElementById("current-score").innerHTML) + timeoutIdArray.length;
+        document.getElementById("gameover-score").innerHTML = parseInt(document.getElementById("gameover-score").innerHTML) + timeoutIdArray.length;
 
         // Update the best score
         if (parseInt(document.getElementById("best-score").innerHTML) <= parseInt(document.getElementById("current-score").innerHTML)) {
@@ -235,8 +155,74 @@ $(document).ready(function (e) {
         timeoutIdArray = [];
 
         // Add any new tile colors
-        addTiles();
+        addColors();
+
+        // Check for gameover
+
+
+        setTimeout(function () {
+
+            if (tileArray[0][1] != null) {
+                edgeNoCorners++;
+            }
+            if (tileArray[0][2] != null) {
+                edgeNoCorners++;
+            }
+            if (tileArray[1][0] != null) {
+                edgeNoCorners++;
+            }
+            if (tileArray[1][3] != null) {
+                edgeNoCorners++;
+            }
+            if (tileArray[2][0] != null) {
+                edgeNoCorners++;
+            }
+            if (tileArray[2][3] != null) {
+                edgeNoCorners++;
+            }
+            if (tileArray[3][1] != null) {
+                edgeNoCorners++;
+            }
+            if (tileArray[3][2] != null) {
+                edgeNoCorners++;
+            }
+
+            centerBackground = document.getElementById("center-tile").style.backgroundColor;
+
+            if (edgeNoCorners == 8) {
+                if (tileArray[0][1].style.backgroundColor != centerBackground && tileArray[0][2].style.backgroundColor != centerBackground &&
+                    tileArray[1][0].style.backgroundColor != centerBackground && tileArray[1][3].style.backgroundColor != centerBackground &&
+                    tileArray[2][0].style.backgroundColor != centerBackground && tileArray[2][3].style.backgroundColor != centerBackground &&
+                    tileArray[3][1].style.backgroundColor != centerBackground && tileArray[3][2].style.backgroundColor != centerBackground) {
+                    edgeFull = true;
+                }
+            }
+
+            edgeNoCorners = 0;
+
+        }, 101);
+
+
+        setTimeout(function () {
+            if (tileArray[0][0] != null && tileArray[0][3] != null && tileArray[3][0] != null && tileArray[3][3] != null) {
+                cornersFull = true;
+            }
+        }, 102);
+
+        setTimeout(function () {
+            if (edgeFull && cornersFull) {
+                gameOver = true;
+            }
+        }, 103);
+
+        setTimeout(function () {
+            if (gameOver) {
+                document.getElementById("postgame-message").style.display = "inline";
+            }
+        }, 104);
     });
+
+/* These events happen when you move a tile */
 
     // Check if the tile is on an edge
     function isEdge(row, column) {
@@ -423,7 +409,7 @@ $(document).ready(function (e) {
         }
     }
 
-    // Check to see if a particular tile is removed from the board
+    // Check to see if a particular tile should be removed from the board
     function checkRemove(row, column) {
         if (!isEdge(row, column)) {
             return true;
@@ -434,8 +420,8 @@ $(document).ready(function (e) {
 
     // Finish the old animations
     function finishAnimations() {
-        for (row = 0; row <= 3; row++) {
-            for (column = 0; column <= 3; column++) {
+        for (var row = 0; row <= 3; row++) {
+            for (var column = 0; column <= 3; column++) {
                 if (row + 1 <= 3 && column + 1 <= 3) {
                     if (tileArray[row + 1][column + 1] != null) {
                         $(tileArray[row + 1][column + 1]).finish();
@@ -474,7 +460,132 @@ $(document).ready(function (e) {
         tileArray[row][column] = null;
     }
 
-    function addTiles() {
+
+/* The operations of each turn */
+
+    // Add a new tile
+    function newTile() {
+
+        // Create a new tile
+        createdTile = document.createElement("div");
+
+        createdTile.setAttribute("position", "absolute");
+        createdTile.setAttribute("class", "tile");
+
+        // Find the empty corners
+        var emptyCorners = [];
+        if (!tileArray[0][0]) {
+            emptyCorners.push("tile-1");
+        }
+        if (!tileArray[0][3]) {
+            emptyCorners.push("tile-4");
+        }
+        if (!tileArray[3][0]) {
+            emptyCorners.push("tile-13");
+        }
+        if (!tileArray[3][3]) {
+            emptyCorners.push("tile-16");
+        }
+
+        // Of the empty corners, pick a corner for the tile to go into
+        var newTileCorner = Math.floor(Math.random() * emptyCorners.length);
+
+        if (emptyCorners.length > 0) {
+            // Pick a corner to put the tile in
+            createdTile.setAttribute("id", emptyCorners[newTileCorner]);
+
+            // Insert the tile into the corner
+            $("#tile-container").append(createdTile);
+
+            // Insert the tile into the array of tiles
+            if (emptyCorners[newTileCorner] == "tile-1") {
+                tileArray[0][0] = createdTile;
+            } else if (emptyCorners[newTileCorner] == "tile-4") {
+                tileArray[0][3] = createdTile;
+            } else if (emptyCorners[newTileCorner] == "tile-13") {
+                tileArray[3][0] = createdTile;
+            } else if (emptyCorners[newTileCorner] == "tile-16") {
+                tileArray[3][3] = createdTile;
+            }
+
+            // Access the tile with jquery
+            var $activeTile = $("#" + createdTile.id);
+            $activeTile.hide().fadeIn("fast");
+
+            // Make the new tile the same color as the old future tile
+            $activeTile.css("background-color", document.getElementById("future-tile").style.backgroundColor);
+        }
+    };
+
+    // Check to see if there are any doubles
+    function checkDoubles() {
+        if (timeoutIdArray.length == 2) {
+
+            // Find the double color
+            doubleColor = tileArray[timeoutIdArray[0][1]][timeoutIdArray[0][2]].style.backgroundColor;
+
+            for (var row = 0; row <= 3; row++) {
+                for (var column = 0; column <= 3; column++) {
+                    if (tileArray[row][column] != null && ((row != 1 && row != 2) || (column != 1 & column != 2))) {
+                        if (tileArray[row][column].style.backgroundColor == doubleColor) {
+                            // I do not understand this, but it's an IIFE
+                            (function (row, column) {
+                                timeoutId = setTimeout(function () {
+                                    $(tileArray[row][column]).remove();
+                                    tileArray[row][column] = null;
+                                }, 99);
+                            }(row, column));
+                            timeoutIdArray.push([timeoutId, row, column]);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // The future tile
+    function newFutureTile() {
+
+        // Access the tile with jquery
+        var $activeTile = $("#future-tile");
+        $activeTile.hide().fadeIn("fast");
+
+        // Pick a color for the future tile
+        futureColor = pickColor();
+        document.getElementById("future-tile").style.backgroundColor = futureColor;
+    }
+
+    // The center tile
+    function newCenterTile() {
+
+        // Access the tile with jquery
+        var $activeTile = $("#center-tile");
+        $activeTile.hide().fadeIn("fast");
+
+        // Assign the picked color to the center tile
+        document.getElementById("center-tile").style.backgroundColor = futureColor;
+    }
+
+    // Pick a random color from the available options
+    function pickColor() {
+        if (colorArray.length > 0) {
+            var oldColorIndex = colorArray.indexOf(document.getElementById("center-tile").style.backgroundColor);
+            if (oldColorIndex > -1) {
+                var oldColor = colorArray[oldColorIndex];
+                colorArray.splice(oldColorIndex, 1);
+            }
+            var colorToReturn = colorArray[Math.floor(Math.random() * colorArray.length)];
+            if (oldColorIndex > -1) {
+                colorArray.push(oldColor);
+            }
+            return colorToReturn;
+        } else {
+            return colorArray[Math.floor(Math.random() * colorArray.length)];
+        }
+    }
+
+    // Add new tile colors to the colorArray
+    function addColors() {
         var currentScore = parseInt(document.getElementById("current-score").innerHTML);
         if (currentScore >= 10 && !yellowActivated) {
             yellowActivated = true;
@@ -527,46 +638,4 @@ $(document).ready(function (e) {
     var parentDiv;
     var $work;
     var $testTile;
-
-    $(document).keydown(function (e) {
-        if (e.keyCode == 70) {
-            $tile = $("#grid-cell-1");
-            $tile.fadeIn("slow");
-            $tile.css("background-color", "blue");
-            $tile.css("height", "100px");
-            $tile.css("width", "100px");
-        }
-    });
-
-    $(document).keydown(function (e) {
-        if (e.keyCode == 69) {
-            $testTile = document.createElement("div");
-            $testTile.setAttribute("id", "testTile");
-            parentDiv = document.getElementById("tile-container");
-            parentDiv.insertBefore($testTile, null);
-
-            $work = $("#testTile");
-            $work.hide().fadeIn("slow");
-            $work.css("background-color", "red");
-            $work.css("height", "100px");
-            $work.css("width", "100px");
-            $work.css("display", "block");
-        }
-    });
-
-    $(document).keydown(function (e) {
-        if (e.keyCode == 68) {
-            $testTile = document.createElement("div");
-            $testTile.setAttribute("id", "testTile2");
-            parentDiv = document.getElementById("tile-container");
-            parentDiv.insertBefore($testTile, null);
-
-            $work = $("#testTile2");
-            $work.hide().fadeIn("slow");
-            $work.css("background-color", "yellow");
-            $work.css("height", "100px");
-            $work.css("width", "100px");
-            $work.css("display", "block");
-        }
-    });
 });
