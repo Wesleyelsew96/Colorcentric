@@ -32,8 +32,15 @@ FIXES
 
 Alpha-4:
 
+* Make the tile that spawns be different than the previous tile
+
+FIXES
+
+-------------------------
+
+Alpha-5:
+
 UPDATES
 * When the game ends, a screen appears that prompts the user to restart //TODO
 
 FIXES
-

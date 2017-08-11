@@ -164,7 +164,20 @@ $(document).ready(function (e) {
 
     // Pick a random color from the available options
     function pickColor() {
-        return colorArray[Math.floor(Math.random() * colorArray.length)]; //TODO disallow the center color to come again
+        if (colorArray.length > 0) {
+            var oldColorIndex = colorArray.indexOf(document.getElementById("center-tile").style.backgroundColor);
+            if (oldColorIndex > -1) {
+                var oldColor = colorArray[oldColorIndex];
+                colorArray.splice(oldColorIndex, 1);
+            }
+            var colorToReturn = colorArray[Math.floor(Math.random() * colorArray.length)];
+            if (oldColorIndex > -1) {
+                colorArray.push(oldColor);
+            }
+            return colorToReturn;
+        } else {
+            return colorArray[Math.floor(Math.random() * colorArray.length)];
+        }
     }
 
     // Make a move
