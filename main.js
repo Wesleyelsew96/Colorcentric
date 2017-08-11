@@ -30,7 +30,6 @@ $(document).ready(function (e) {
     newGame();
 
 
-
     $(".restart-container").click(newGame);
 
 
@@ -52,6 +51,8 @@ $(document).ready(function (e) {
         colorArray.push("red");
         colorArray.push("blue");
 
+        // Reset score
+        document.getElementById("current-score").innerHTML = "0";
 
         // Make a random "old" future tile and add a tile to the board of that color
         newFutureTile();
@@ -183,6 +184,11 @@ $(document).ready(function (e) {
 
         // Update the score
         document.getElementById("current-score").innerHTML = parseInt(document.getElementById("current-score").innerHTML) + timeoutIdArray.length;
+
+        // Update the best score
+        if (parseInt(document.getElementById("best-score").innerHTML) <= parseInt(document.getElementById("current-score").innerHTML)) {
+            document.getElementById("best-score").innerHTML = parseInt(document.getElementById("current-score").innerHTML);
+        }
 
         // Check to see if a new futureColor is needed
         if (timeoutIdArray.length > 0) {

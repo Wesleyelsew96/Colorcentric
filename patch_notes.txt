@@ -1,0 +1,20 @@
+Colorcentric Patch Notes:
+
+-------------------------
+
+Alpha-1:
+
+GAME RELEASED
+
+-------------------------
+
+Alpha-2:
+
+UPDATES
+* Added in the Best Score feature
+* Increased the space between the game and the rules
+
+FIXES
+* Fixed the score so that it resets when "New Game" is clicked
+
+-------------------------
