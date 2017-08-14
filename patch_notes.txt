@@ -50,4 +50,20 @@ FIXES
 
 -------------------------
 
-BETA??
+Beta-1:
+
+UPDATES
+* A border is now shown around each corner tile
+* The colors were given a makeover
+* The future tile display is improved, and is labeled "Next tile"
+* The "Game Over" screen is improved
+* Added sounds
+* Added sound toggle button
+* Added a trademark for the title
+* Updated the game information below the game
+
+FIXES
+* Removed a bug where you could lose with 1 corner left open
+* Fixed an issue where playing too fast caused invisible tiles to appear
+* Fixed an issue where playing too fast allows tiles to glitch through the center
+* Animations no longer "pile up" when playing too quickly

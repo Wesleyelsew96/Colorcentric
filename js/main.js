@@ -2,21 +2,44 @@ $(document).ready(function (e) {
     e.stopPropagation;
 
     // Set the variables
-    var timeoutId; // The id for setTimeouts in the code
-    var timeoutIdArray = []; // The array of timeout IDs
+    var removals = 0;
     var createdTile;
-    var centerBackground = "red"; // probably just default
+    var centerBackground;
     var edgeNoCorners = 0;
     var edgeFull = false;
     var cornersFull = false;
     var gameOver = false;
-    var futureColor = "red"; // probably just default
-    var doubleColor = "red"; // probably just default
+    var freshStart = true;
+    var createNewCenterTile = false;
+    var swooshSound = document.getElementById("swooshSound");
+    var removeSound = document.getElementById("removeSound");
+    var gameOverSound = document.getElementById("gameOverSound");
+    var soundOn = true;
+
+    // setTimeout IDs
+    var removeRemovesId = 0;
+    var newTileId = 0;
+    var newFutureTileId = 0;
+    var checkGameOverId = 0;
+
+    // setTimeout trackers
+    var newTileFinished = true;
+    var newFutureTileFinished = true;
+    var checkGameOverFinished = true;
+
+
+    var futureColor;
+    var doubleColor;
+    var doubleAchieved = false;
     var colorArray = [];
     var tileArray = [[null, null, null, null],
                      [null, null, null, null],
                      [null, null, null, null],
                      [null, null, null, null]];
+    var removeArray = [[null, null, null, null],
+                       [null, null, null, null],
+                       [null, null, null, null],
+                       [null, null, null, null]];
 
     // Set the colors
     var yellowActivated = false;
@@ -33,8 +56,9 @@ $(document).ready(function (e) {
     // Automatically start a game
     newGame();
 
-
+    // Interactions with the screen
     $(".restart-button").click(newGame);
+    $("#sound-toggle").click(soundToggle);
 
 
     // Start a new game
@@ -43,6 +67,9 @@ $(document).ready(function (e) {
         edgeFull = false;
         cornersFull = false;
         gameOver = false;
+        freshStart = true;
+
+        removals = 0;
 
         // Remove the gameover overlay
         document.getElementById("postgame-message").style.display = "none";
@@ -68,30 +95,47 @@ $(document).ready(function (e) {
         grayActivated = false;
         blackActivated = false;
         whiteActivated = false;
-
+        
 
         // Reset the color array
         colorArray = [];
-        colorArray.push("red");
-        colorArray.push("blue");
+        colorArray.push("firebrick");
+        colorArray.push("darkblue");
 
         // Reset scores
         document.getElementById("current-score").innerHTML = "0";
         document.getElementById("gameover-score").innerHTML = "0";
 
         // Make a random "old" future tile and add a tile to the board of that color
-        newFutureTile();
+        //newFutureTile();
+        futureColor = pickColor();
         newTile();
 
         // Make another random "old" future tile and add another tile to the board of that color
-        newFutureTile();
+        //newFutureTile();
+        futureColor = pickColor();
         newTile();
+
+        // Re-enable the fadeIns for center and future tiles
+        freshStart = false;
+
+        // Make the first center tile
+        newCenterTile();
 
         // Make the real future tile at the top
         newFutureTile();
+    }
 
-        // Make the first center tile
-        newCenterTile("red");
+    function soundToggle() {
+        if (soundOn == false) {
+            soundOn = true;
+            $("#sound-toggle").attr("src", "images/sounds-on.png");
+            $("#sound-toggle").attr("alt", "Sound On");
+        } else {
+            soundOn = false;
+            $("#sound-toggle").attr("src", "images/sounds-off.png");
+            $("#sound-toggle").attr("alt", "Sound Off");
+        }
     }
 
 /* These events happen when you press a key */
@@ -100,13 +144,14 @@ $(document).ready(function (e) {
     $(document).keydown(function (e) {
 
         // Prevent scrolling
+        e.stopPropagation();
         e.preventDefault();
 
         // Finish any old animations
         finishAnimations();
 
-        // Clear the old timeoutIds
-        removeTilesEarly();
+        // Reset the number of removals
+        removals = 0;
 
         // Log the old tileArray
         var newTileArray = _.cloneDeep(tileArray);
@@ -127,14 +172,38 @@ $(document).ready(function (e) {
 
         // Check for the "SUPER" removal, when a double is achieved
         checkDoubles();
+        if (removals > 0 && soundOn) {
+            removeSound.play();
+        }
+
+        removeRemovesId = setTimeout(function () {
+            removeRemoves();
+        }, 100);
+
+        // Check to see if a new center tile is needed
+        if (createNewCenterTile) {
+            newCenterTile();
+            createNewCenterTile = false;
+        }
 
         if (JSON.stringify(newTileArray) != JSON.stringify(tileArray)) {
-            setTimeout(function () { newTile() }, 100); // Change this to toggle the cheap strat in 2048
+
+            // Play a swoosh sound
+            if (soundOn) {
+                swooshSound.play();
+            }
+
+            newTileId = setTimeout(function () {
+                newTile();
+                newTileFinished = true;
+            }, 100); // Change this to toggle the cheap strat in 2048
+        } else {
+            newTileFinished = true;
         }
 
         // Update the score
-        document.getElementById("current-score").innerHTML = parseInt(document.getElementById("current-score").innerHTML) + timeoutIdArray.length;
-        document.getElementById("gameover-score").innerHTML = parseInt(document.getElementById("gameover-score").innerHTML) + timeoutIdArray.length;
+        document.getElementById("current-score").innerHTML = parseInt(document.getElementById("current-score").innerHTML) + removals;
+        document.getElementById("gameover-score").innerHTML = parseInt(document.getElementById("gameover-score").innerHTML) + removals;
 
         // Update the best score
         if (parseInt(document.getElementById("best-score").innerHTML) <= parseInt(document.getElementById("current-score").innerHTML)) {
@@ -143,83 +212,22 @@ $(document).ready(function (e) {
 
         // Create a new future tile color
         if (JSON.stringify(newTileArray) != JSON.stringify(tileArray)) {
-            setTimeout(newFutureTile, 100);
+            newFutureTileId = setTimeout(function () {
+                newFutureTile();
+                newFutureTileFinished = true;
+            }, 101);
+        } else {
+            newFutureTileFinished = true;
         }
-
-        // Check to create a new center tile
-        if (timeoutIdArray.length > 0) {
-            setTimeout(newCenterTile, 99);
-        }
-
-        // Erase the old array of removed tiles
-        timeoutIdArray = [];
 
         // Add any new tile colors
         addColors();
 
         // Check for gameover
-
-
-        setTimeout(function () {
-
-            if (tileArray[0][1] != null) {
-                edgeNoCorners++;
-            }
-            if (tileArray[0][2] != null) {
-                edgeNoCorners++;
-            }
-            if (tileArray[1][0] != null) {
-                edgeNoCorners++;
-            }
-            if (tileArray[1][3] != null) {
-                edgeNoCorners++;
-            }
-            if (tileArray[2][0] != null) {
-                edgeNoCorners++;
-            }
-            if (tileArray[2][3] != null) {
-                edgeNoCorners++;
-            }
-            if (tileArray[3][1] != null) {
-                edgeNoCorners++;
-            }
-            if (tileArray[3][2] != null) {
-                edgeNoCorners++;
-            }
-
-            centerBackground = document.getElementById("center-tile").style.backgroundColor;
-
-            if (edgeNoCorners == 8) {
-                if (tileArray[0][1].style.backgroundColor != centerBackground && tileArray[0][2].style.backgroundColor != centerBackground &&
-                    tileArray[1][0].style.backgroundColor != centerBackground && tileArray[1][3].style.backgroundColor != centerBackground &&
-                    tileArray[2][0].style.backgroundColor != centerBackground && tileArray[2][3].style.backgroundColor != centerBackground &&
-                    tileArray[3][1].style.backgroundColor != centerBackground && tileArray[3][2].style.backgroundColor != centerBackground) {
-                    edgeFull = true;
-                }
-            }
-
-            edgeNoCorners = 0;
-
-        }, 101);
-
-
-        setTimeout(function () {
-            if (tileArray[0][0] != null && tileArray[0][3] != null && tileArray[3][0] != null && tileArray[3][3] != null) {
-                cornersFull = true;
-            }
+        checkGameOverId = setTimeout(function () {
+            checkGameOver();
+            checkGameOverFinished = true;
         }, 102);
-
-        setTimeout(function () {
-            if (edgeFull && cornersFull) {
-                gameOver = true;
-            }
-        }, 103);
-
-        setTimeout(function () {
-            if (gameOver) {
-                document.getElementById("postgame-message").style.display = "inline";
-            }
-        }, 104);
     });
 
 /* These events happen when you move a tile */
@@ -279,15 +287,11 @@ $(document).ready(function (e) {
 
     // Make sure the tile space below is clear
     function checkBelow(row, column) {
-        if (!isEdge(row + 1, column)) {
-            if (tileArray[row][column] != null) {
-                if (document.getElementById("center-tile").style.backgroundColor == tileArray[row][column].style.backgroundColor) {
-                    return true;
-                } else {
-                    return false;
-                }
+        if (!isEdge(row + 1, column) && tileArray[row][column] != null) {
+            if (document.getElementById("center-tile").style.backgroundColor == tileArray[row][column].style.backgroundColor) {
+                return true;
             } else {
-                // doesn't matter?
+                return false;
             }
         } else {
             return !tileArray[row + 1][column];
@@ -296,15 +300,11 @@ $(document).ready(function (e) {
 
     // Make sure the tile space above is clear
     function checkAbove(row, column) {
-        if (!isEdge(row - 1, column)) {
-            if (tileArray[row][column] != null) {
-                if (document.getElementById("center-tile").style.backgroundColor == tileArray[row][column].style.backgroundColor) {
-                    return true;
-                } else {
-                    return false;
-                }
+        if (!isEdge(row - 1, column) && tileArray[row][column] != null) {
+            if (document.getElementById("center-tile").style.backgroundColor == tileArray[row][column].style.backgroundColor) {
+                return true;
             } else {
-                // doesn't matter?
+                return false;
             }
         } else {
             return !tileArray[row - 1][column];
@@ -313,15 +313,11 @@ $(document).ready(function (e) {
 
     // Make sure the tile space to the left is clear
     function checkLeft(row, column) {
-        if (!isEdge(row, column - 1)) {
-            if (tileArray[row][column] != null) {
-                if (document.getElementById("center-tile").style.backgroundColor == tileArray[row][column].style.backgroundColor) {
-                    return true;
-                } else {
-                    return false;
-                }
+        if (!isEdge(row, column - 1) && tileArray[row][column] != null) {
+            if (document.getElementById("center-tile").style.backgroundColor == tileArray[row][column].style.backgroundColor) {
+                return true;
             } else {
-                // doesn't matter?
+                return false;
             }
         } else {
             return !tileArray[row][column - 1];
@@ -330,15 +326,11 @@ $(document).ready(function (e) {
 
     // Make sure the tile space to the right is clear
     function checkRight(row, column) {
-        if (!isEdge(row, column + 1)) {
-            if (tileArray[row][column] != null) {
-                if (document.getElementById("center-tile").style.backgroundColor == tileArray[row][column].style.backgroundColor) {
-                    return true;
-                } else {
-                    return false;
-                }
+        if (!isEdge(row, column + 1) && tileArray[row][column] != null) {
+            if (document.getElementById("center-tile").style.backgroundColor == tileArray[row][column].style.backgroundColor) {
+                return true;
             } else {
-                // doesn't matter?
+                return false;
             }
         } else {
             return !tileArray[row][column + 1];
@@ -347,66 +339,114 @@ $(document).ready(function (e) {
 
     // Move A SINGLE tile downward
     function moveTileDown(row, column) {
-        $(tileArray[row][column]).animate({ "top": "+=121.25px" }, 100);
-        tileArray[row + 1][column] = tileArray[row][column];
-        tileArray[row][column] = null;
+
+        //This happens as soon as the player makes a move
         if (checkRemove(row + 1, column)) {
-            timeoutId = setTimeout(function () {
+            doubleColor = tileArray[row][column].style.backgroundColor;
+            removals++;
+            if (removals == 1) {
+                // This will cause the creation of a new center tile, once all movements have been processed
+                createNewCenterTile = true;
+            }
+        }
+
+        // This is the animation
+        $(tileArray[row][column]).animate({ "top": "+=121.25px" }, 80, "linear", function () {
+
+            //This happens at the end of each tile's movement
+            if (checkRemove(row + 1, column)) {
                 $(tileArray[row + 1][column]).remove();
                 tileArray[row + 1][column] = null;
-            }, 200);
-            timeoutIdArray.push([timeoutId, row + 1, column]);
-        } else {
-            tileArray[row + 1][column].setAttribute("id", "tile-" + (parseInt(tileArray[row + 1][column].id.slice(5)) + 4));
-        }
+            } else {
+                tileArray[row + 1][column].setAttribute("id", "tile-" + (parseInt(tileArray[row + 1][column].id.slice(5)) + 4));
+            }
+        });
+        tileArray[row + 1][column] = tileArray[row][column];
+        tileArray[row][column] = null;
     }
 
     // Move A SINGLE tile upward
     function moveTileUp(row, column) {
-        $(tileArray[row][column]).animate({ "top": "-=121.25px" }, 100);
-        tileArray[row - 1][column] = tileArray[row][column];
-        tileArray[row][column] = null;
+
+        //This happens as soon as the player makes a move
         if (checkRemove(row - 1, column)) {
-            timeoutId = setTimeout(function () {
+            doubleColor = tileArray[row][column].style.backgroundColor;
+            removals++;
+            if (removals == 1) {
+                // This will cause the creation of a new center tile, once all movements have been processed
+                createNewCenterTile = true;
+            }
+        }
+
+        // This is the animation
+        $(tileArray[row][column]).animate({ "top": "-=121.25px" }, 80, "linear", function () {
+
+            // This happens at the end of each tile's movement
+            if (checkRemove(row - 1, column)) {
                 $(tileArray[row - 1][column]).remove();
                 tileArray[row - 1][column] = null;
-            }, 200);
-            timeoutIdArray.push([timeoutId, row - 1, column]);
-        } else {
-            tileArray[row - 1][column].setAttribute("id", "tile-" + (parseInt(tileArray[row - 1][column].id.slice(5)) - 4));
-        }
+            } else {
+                tileArray[row - 1][column].setAttribute("id", "tile-" + (parseInt(tileArray[row - 1][column].id.slice(5)) - 4));
+            }
+        });
+        tileArray[row - 1][column] = tileArray[row][column];
+        tileArray[row][column] = null;
     }
 
     // Move A SINGLE tile left
     function moveTileLeft(row, column) {
-        $(tileArray[row][column]).animate({ "left": "-=121.25px" }, 100);
-        tileArray[row][column - 1] = tileArray[row][column];
-        tileArray[row][column] = null;
+
+        //This happens as soon as the player makes a move
         if (checkRemove(row, column - 1)) {
-            timeoutId = setTimeout(function () {
+            doubleColor = tileArray[row][column].style.backgroundColor;
+            removals++;
+            if (removals == 1) {
+                // This will cause the creation of a new center tile, once all movements have been processed
+                createNewCenterTile = true;
+            }
+        }
+
+        // This is the animation
+        $(tileArray[row][column]).animate({ "left": "-=121.25px" }, 80, "linear", function () {
+
+            // This happens at the end of each tile's movement
+            if (checkRemove(row, column - 1)) {
                 $(tileArray[row][column - 1]).remove();
                 tileArray[row][column - 1] = null;
-            }, 200);
-            timeoutIdArray.push([timeoutId, row, column - 1]);
-        } else {
-            tileArray[row][column - 1].setAttribute("id", "tile-" + (parseInt(tileArray[row][column - 1].id.slice(5)) - 1));
-        }
+            } else {
+                tileArray[row][column - 1].setAttribute("id", "tile-" + (parseInt(tileArray[row][column - 1].id.slice(5)) - 1));
+            }            
+        });
+        tileArray[row][column - 1] = tileArray[row][column];
+        tileArray[row][column] = null;
     }
 
     // Move A SINGLE tile right
     function moveTileRight(row, column) {
-        $(tileArray[row][column]).animate({ "left": "+=121.25px" }, 100);
-        tileArray[row][column + 1] = tileArray[row][column];
-        tileArray[row][column] = null;
+
+        //This happens as soon as the player makes a move
         if (checkRemove(row, column + 1)) {
-            timeoutId = setTimeout(function () {
+            doubleColor = tileArray[row][column].style.backgroundColor;
+            removals++;
+            if (removals == 1) {
+                // This will cause the creation of a new center tile, once all movements have been processed
+                createNewCenterTile = true;
+            }
+        }
+
+        // This is the animation
+        $(tileArray[row][column]).animate({ "left": "+=121.25px" }, 80, "linear", function () {
+
+            // This happens at the end of each tile's movement
+            if (checkRemove(row, column + 1)) {
                 $(tileArray[row][column + 1]).remove();
                 tileArray[row][column + 1] = null;
-            }, 200);
-            timeoutIdArray.push([timeoutId, row, column + 1]);
-        } else {
-            tileArray[row][column + 1].setAttribute("id", "tile-" + (parseInt(tileArray[row][column + 1].id.slice(5)) + 1));
-        }
+            } else {
+                tileArray[row][column + 1].setAttribute("id", "tile-" + (parseInt(tileArray[row][column + 1].id.slice(5)) + 1));
+            }
+        });
+        tileArray[row][column + 1] = tileArray[row][column];
+        tileArray[row][column] = null;
     }
 
     // Check to see if a particular tile should be removed from the board
@@ -444,22 +484,43 @@ $(document).ready(function (e) {
                 }
             }
         }
-    }
 
-    // Remove all tiles that should be removed EARLY
-    function removeTilesEarly() {
-        for (var i = 0; i < timeoutIdArray.length; i++) {
-            removeTileEarly(timeoutIdArray[i][0], timeoutIdArray[i][1], timeoutIdArray[i][2]);
+        // Remove the "remove"-marked tiles
+        clearTimeout(removeRemovesId);
+        removeRemoves();
+
+        // End the queue of the center tile
+        $("#center-tile").clearQueue();
+
+        // Hurry the newTile function if the player plays too quickly
+        clearTimeout(newTileId);
+        if (newTileFinished == false ) {
+            newTile();
         }
-    }
+        newTileFinished = false;
 
-    // Remove a tile from the board EARLY (This is the same code as what's in each setTimeout up above, but I have to hardcode it there for reasons).
-    function removeTileEarly(id, row, column) {
-        clearTimeout(id);
-        $(tileArray[row][column]).remove();
-        tileArray[row][column] = null;
-    }
+        // Hurry the newFutureTile function if the player plays too quickly
+        clearTimeout(newFutureTileId);
+        if (newFutureTileFinished == false) {
+            newFutureTile();
+        }
+        newFutureTileFinished = false;
 
+        // Hurry the checkGameOver function if the player plays too quickly
+        clearTimeout(checkGameOverId);
+        if (checkGameOverFinished == false) {
+            checkGameOver();
+        }
+        checkGameOverFinished = false;
+
+        // Finish the sounds
+        swooshSound.pause();
+        swooshSound.currentTime = 0;
+        removeSound.pause();
+        removeSound.currentTime = 0;
+        gameOverSound.pause();
+        gameOverSound.currentTime = 0;
+    }
 
 /* The operations of each turn */
 
@@ -513,33 +574,40 @@ $(document).ready(function (e) {
             $activeTile.hide().fadeIn("fast");
 
             // Make the new tile the same color as the old future tile
-            $activeTile.css("background-color", document.getElementById("future-tile").style.backgroundColor);
+            createdTile.style.backgroundColor = futureColor;
         }
     };
 
     // Check to see if there are any doubles
     function checkDoubles() {
-        if (timeoutIdArray.length == 2) {
-
-            // Find the double color
-            doubleColor = tileArray[timeoutIdArray[0][1]][timeoutIdArray[0][2]].style.backgroundColor;
-
+        if (removals == 2) {
             for (var row = 0; row <= 3; row++) {
                 for (var column = 0; column <= 3; column++) {
                     if (tileArray[row][column] != null && ((row != 1 && row != 2) || (column != 1 & column != 2))) {
                         if (tileArray[row][column].style.backgroundColor == doubleColor) {
-                            // I do not understand this, but it's an IIFE
-                            (function (row, column) {
-                                timeoutId = setTimeout(function () {
-                                    $(tileArray[row][column]).remove();
-                                    tileArray[row][column] = null;
-                                }, 99);
-                            }(row, column));
-                            timeoutIdArray.push([timeoutId, row, column]);
+                            removeArray[row][column] = "remove";
+                            removals++;
+                            doubleAchieved = true;
                         }
                     }
                 }
             }
+        }
+    }
+
+    // Remove the "remove"-marked tiles
+    function removeRemoves() {
+        if (doubleAchieved == true) {
+            for (var doubleRow = 0; doubleRow <= 3; doubleRow++) {
+                for (var doubleColumn = 0; doubleColumn <= 3; doubleColumn++) {
+                    if (removeArray[doubleRow][doubleColumn] == "remove") {
+                        $(document.getElementById("tile-" + (4 * doubleRow + doubleColumn + 1).toString())).remove();
+                        tileArray[doubleRow][doubleColumn] = null;
+                        removeArray[doubleRow][doubleColumn] = null;
+                    }
+                }
+            }
+            doubleAchieved = false;
         }
     }
 
@@ -548,10 +616,25 @@ $(document).ready(function (e) {
 
         // Access the tile with jquery
         var $activeTile = $("#future-tile");
-        $activeTile.hide().fadeIn("fast");
+        if (freshStart) {
+            $activeTile.fadeIn("fast");
+        } else {
+            $activeTile.hide().fadeIn("fast");
+        }
 
         // Pick a color for the future tile
         futureColor = pickColor();
+
+        var success = false;
+        for (var i = 0; i < colorArray.length; i++) {
+            if (colorArray[i] == futureColor) {
+                success = true;
+            }
+        }
+        if (success == false) {
+            var broke = true;
+        }
+
         document.getElementById("future-tile").style.backgroundColor = futureColor;
     }
 
@@ -560,16 +643,26 @@ $(document).ready(function (e) {
 
         // Access the tile with jquery
         var $activeTile = $("#center-tile");
-        $activeTile.hide().fadeIn("fast");
+        if (freshStart) {
+            $activeTile.fadeIn("fast");
+        } else {
+            $activeTile.delay(100).hide(0).fadeIn("fast");
+        }
+        document.getElementById("center-tile").style.display = "inline";
 
         // Assign the picked color to the center tile
-        document.getElementById("center-tile").style.backgroundColor = futureColor;
+        setTimeout(function () {
+            document.getElementById("center-tile").style.backgroundColor = futureColor;
+        }, 100);
     }
 
     // Pick a random color from the available options
     function pickColor() {
-        if (colorArray.length > 0) {
+        if (colorArray.length > 1) {
             var oldColorIndex = colorArray.indexOf(document.getElementById("center-tile").style.backgroundColor);
+            if (freshStart == true) {
+                oldColorIndex = -1;
+            }
             if (oldColorIndex > -1) {
                 var oldColor = colorArray[oldColorIndex];
                 colorArray.splice(oldColorIndex, 1);
@@ -589,7 +682,7 @@ $(document).ready(function (e) {
         var currentScore = parseInt(document.getElementById("current-score").innerHTML);
         if (currentScore >= 10 && !yellowActivated) {
             yellowActivated = true;
-            colorArray.push("yellow");
+            colorArray.push("gold");
         }
         if (currentScore >= 20 && !greenActivated) {
             greenActivated = true;
@@ -597,27 +690,27 @@ $(document).ready(function (e) {
         }
         if (currentScore >= 50 && !purpleActivated) {
             purpleActivated = true;
-            colorArray.push("purple");
+            colorArray.push("darkmagenta");
         }
         if (currentScore >= 100 && !orangeActivated) {
             orangeActivated = true;
-            colorArray.push("orange");
+            colorArray.push("darkorange");
         }
         if (currentScore >= 200 && !pinkActivated) {
             pinkActivated = true;
-            colorArray.push("pink");
+            colorArray.push("deeppink");
         }
         if (currentScore >= 500 && !tealActivated) {
             tealActivated = true;
-            colorArray.push("teal");
+            colorArray.push("#33ADD6");
         }
         if (currentScore >= 1000 && !brownActivated) {
             brownActivated = true;
-            colorArray.push("brown");
+            colorArray.push("saddlebrown");
         }
         if (currentScore >= 2000 && !grayActivated) {
             grayActivated = true;
-            colorArray.push("gray");
+            colorArray.push("dimgrey");
         }
         if (currentScore >= 5000 && !blackActivated) {
             blackActivated = true;
@@ -625,17 +718,64 @@ $(document).ready(function (e) {
         }
         if (currentScore >= 10000 && !whiteActivated) {
             whiteActivated = true;
-            colorArray.push("white");
+            colorArray.push("ghostwhite");
         }
     }
 
+    function checkGameOver() {
+        if (tileArray[0][1] != null) {
+            edgeNoCorners++;
+        }
+        if (tileArray[0][2] != null) {
+            edgeNoCorners++;
+        }
+        if (tileArray[1][0] != null) {
+            edgeNoCorners++;
+        }
+        if (tileArray[1][3] != null) {
+            edgeNoCorners++;
+        }
+        if (tileArray[2][0] != null) {
+            edgeNoCorners++;
+        }
+        if (tileArray[2][3] != null) {
+            edgeNoCorners++;
+        }
+        if (tileArray[3][1] != null) {
+            edgeNoCorners++;
+        }
+        if (tileArray[3][2] != null) {
+            edgeNoCorners++;
+        }
 
+        centerBackground = document.getElementById("center-tile").style.backgroundColor;
 
+        if (edgeNoCorners == 8) {
+            if (tileArray[0][1].style.backgroundColor != centerBackground && tileArray[0][2].style.backgroundColor != centerBackground &&
+                tileArray[1][0].style.backgroundColor != centerBackground && tileArray[1][3].style.backgroundColor != centerBackground &&
+                tileArray[2][0].style.backgroundColor != centerBackground && tileArray[2][3].style.backgroundColor != centerBackground &&
+                tileArray[3][1].style.backgroundColor != centerBackground && tileArray[3][2].style.backgroundColor != centerBackground) {
+                edgeFull = true;
+            }
+        }
 
-    ////////////////////// End of real code
+        edgeNoCorners = 0;
 
-    var $tile;
-    var parentDiv;
-    var $work;
-    var $testTile;
+        if (tileArray[0][0] != null && tileArray[0][3] != null && tileArray[3][0] != null && tileArray[3][3] != null) {
+            cornersFull = true;
+        }
+
+        if (edgeFull && cornersFull) {
+            gameOver = true;
+        }
+
+        if (gameOver) {
+            document.getElementById("postgame-message").style.display = "inline";
+            if (soundOn) {
+                setTimeout(function () {
+                    gameOverSound.play();
+                }, 100);
+            }
+        }
+    }
 });

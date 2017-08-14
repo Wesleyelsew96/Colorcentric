@@ -2,24 +2,13 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Colorcentric Alpha.v5 </title>
+  <title>Colorcentric Beta.v1 </title>
 
   <link href="main.css" rel="stylesheet" type="text/css">
-  <script src="jquery-3.2.1.min.js" type="text/javascript"></script>
-  <script src="main.js" type="text/javascript"></script>
+  <script src="js/jquery-3.2.1.min.js" type="text/javascript"></script>
+  <script src="js/main.js" type="text/javascript"></script>
   <script src="https://cdn.jsdelivr.net/lodash/4.17.4/lodash.min.js" type="text/javascript"></script>
   <link rel="shortcut icon" href="favicon.ico">
-	
-  <!-- wgw - this is for apple stuff?
-  <link rel="apple-touch-icon" href="meta/apple-touch-icon.png">
-  <link rel="apple-touch-startup-image" href="meta/apple-touch-startup-image-640x1096.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)"> iPhone 5+
-  <link rel="apple-touch-startup-image" href="meta/apple-touch-startup-image-640x920.png"  media="(device-width: 320px) and (device-height: 480px) and (-webkit-device-pixel-ratio: 2)"> iPhone, retina
-  -->
-	
-  <!-- wgw - I have no clue what this is for, cuz of the two-sites issue
-  <meta name="apple-mobile-web-app-capable" content="no">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  -->
 
   <meta name="description" content="A tile game">
   <meta name="keywords" content="Colorcentric,Color,2048,Grid,Center">
@@ -33,7 +22,7 @@
     <div class="heading">
       <h1 class="title">
 	<!-- order of colors in the game --><!-- red --><!-- blue --><!-- yellow --><!-- green --><!-- purple --><!-- orange --><!-- pink --><!-- aqua --><!-- brown --><!-- gray --><!-- black --><!-- rainbow/white right now -->
-        <span style="color: firebrick">C</span><span style="color: darkblue">o</span><span style="color: gold">l</span><span style="color: green">o</span><span style="color: darkmagenta">r</span><!-- purple --><span style="color: darkorange">c</span><span style="color: deeppink">e</span><span style="color: #33ADD6">n</span><span style="color: saddlebrown">t</span><span style="color: dimgrey">r</span><span style="color: black">i</span><span style="color: ghostwhite">c</span>
+        <span style="color: firebrick">C</span><span style="color: darkblue">o</span><span style="color: gold">l</span><span style="color: green">o</span><span style="color: darkmagenta">r</span><span style="color: darkorange">c</span><span style="color: deeppink">e</span><span style="color: #33ADD6">n</span><span style="color: saddlebrown">t</span><span style="color: dimgrey">r</span><span style="color: black">i</span><span style="color: ghostwhite">c</span><sup id="largeColorcentric">TM</sup>
       </h1>
     </div>
     <div class="scoreboard-container">
@@ -41,9 +30,13 @@
         <a class="restart-button">
           New Game
         </a>
+        <a class="sound-button">
+          <img id="sound-toggle" src="images/sounds-on.png" alt ="Sound On">
+        </a>
       </div>
       <div class="center-scoreboard-container">
-          <div id="future-tile"></div>
+          NEXT TILE
+          <div id="future-tile">NEXT TILE</div>
       </div>
       <div class="right-scoreboard-container">
         <div class="current-container">
@@ -95,16 +88,36 @@
     </div>
     <p id="game-explanation">
       <!-- TODO update this -->
-      <strong class="important">How to play:</strong> Use your <strong>arrow keys</strong> to move all the tiles <strong>one space</strong>. Move the correct tiles to the <strong>middle</strong> to keep the board clear. When a tile is moved to the middle, a new color appears in the center. Clear two tiles simultaneously to clear the board of that color! The <strong>color at the top</strong> shows the next tile (and center color) to appear. New tiles land in the <strong>corners</strong> - make sure to always keep a corner clear. See if you can get the rainbow tile before the board fills up!
+      <strong class="important">How to play:</strong>
+      <ul>
+        <li>Use your arrow keys to move all the tiles one space each</li>
+        <li>Move matching tiles to the middle to keep the board clear</li>
+        <li>When the middle is matched, a new center color appears</li>
+        <li>New tiles land in the corners - keep your corners clear!</li>
+        <li>Clear two tiles simultaneously to clear all tiles of that color</li>
+        <li>The "Next tile" color also shows the next center tile color</li>
+      </ul>
+    </p>
+    <p>
+      This site is the official version of <span id="logo">Colorcentric</span><sup id="smallColorcentric">TM</sup>. You can share a link to it easily with <a href="http://git.io/v7md3">http://git.io/v7md3.</a> Tell your friends!
     </p>
     <hr>
-    <p>
-    <strong class="important">Note:</strong> This site is the official version of Colorcentric. You can share a link to it easily with <a href="http://git.io/v7md3">http://git.io/v7md3.</a> Tell your friends!
-    </p>
-    <hr>
-    <p>
-    Created by Wesley Wright. Tile movement concept based on the popular game <a href="http://gabrielecirulli.github.io/2048/" target=_blank>2048</a> by <a href="https://gabrielecirulli.com/" target=_blank>Gabriele Cirulli</a>.
+    <p id="created-by">
+      Created by Wesley Wright. Tile movement concept based on the popular game <a href="http://gabrielecirulli.github.io/2048/" target=_blank>2048</a> by Gabriele Cirulli.
     </p>
   </div>
+
+  <audio id="swooshSound">
+    <source src="sounds/swoosh.wav" type="audio/wav">
+    Your browser does not support the audio element.
+  </audio>
+  <audio id="removeSound">
+    <source src="sounds/remove.wav" type="audio/wav">
+    Your browser does not support the audio element.
+  </audio>
+  <audio id="gameOverSound">
+    <source src="sounds/gameOver.wav" type="audio/wav">
+    Your browser does not support the audio element.
+  </audio>
 </body>
 </html>
