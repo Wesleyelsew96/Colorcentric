@@ -522,6 +522,7 @@ $(document).ready(function (e) {
 
         // Hurry the newCenterTile function if the player plays too quickly
         document.getElementById("center-tile").style.opacity = 1;
+        document.getElementById("center-tile").style.display = "inline";
 
         // Hurry the newTile function if the player plays too quickly
         clearTimeout(newTileId);
