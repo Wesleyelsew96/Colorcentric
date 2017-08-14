@@ -67,3 +67,10 @@ FIXES
 * Fixed an issue where playing too fast caused invisible tiles to appear
 * Fixed an issue where playing too fast allows tiles to glitch through the center
 * Animations no longer "pile up" when playing too quickly
+
+-------------------------
+
+Beta-1.1:
+
+FIXES
+* Fixed a bug where you could lose with one tile left (For real this time?)

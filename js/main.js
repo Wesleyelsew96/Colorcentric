@@ -64,11 +64,7 @@ $(document).ready(function (e) {
     // Start a new game
     function newGame() {
 
-        edgeFull = false;
-        cornersFull = false;
-        gameOver = false;
         freshStart = true;
-
         removals = 0;
 
         // Remove the gameover overlay
@@ -723,6 +719,11 @@ $(document).ready(function (e) {
     }
 
     function checkGameOver() {
+
+        edgeFull = false;
+        cornersFull = false;
+        gameOver = false;
+
         if (tileArray[0][1] != null) {
             edgeNoCorners++;
         }
