@@ -16,8 +16,6 @@ $(document).ready(function (e) {
     var removeSound = document.getElementById("removeSound");
     var gameOverSound = document.getElementById("gameOverSound");
     var soundOn = true;
-    var onPlaying = true;
-    var onPause = false;
 
     // setTimeout IDs
     var removeRemovesId = 0;
@@ -142,28 +140,6 @@ $(document).ready(function (e) {
         }
     }
 
-    swooshSound.onPlaying = function () {
-        onPlaying = true;
-        onPause = false;
-    };
-
-    swooshSound.onPause = function () {
-        onPlaying = false;
-        onPause = true;
-    }
-
-    function playSound() {
-        if (swooshSound.paused && !onPlaying) {
-            swooshSound.play();
-        }
-    }
-
-    function pauseSound() {
-        if (!swooshSound.paused && !onPause) {
-            swooshSound.play();
-        }
-    }
-
 /* These events happen when you press a key */
 
     // Make a move
@@ -216,7 +192,8 @@ $(document).ready(function (e) {
 
             // Play a swoosh sound
             if (soundOn) {
-                playSound();
+                swooshSound.play();
+                //playSound();
             }
 
             newTileId = setTimeout(function () {
@@ -546,7 +523,7 @@ $(document).ready(function (e) {
         checkGameOverFinished = false;
 
         // Finish the sounds
-        pauseSound();
+        swooshSound.pause();
         swooshSound.currentTime = 0;
         removeSound.pause();
         removeSound.currentTime = 0;
