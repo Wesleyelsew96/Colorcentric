@@ -60,7 +60,9 @@ $(document).ready(function (e) {
 
     // Automatically update the bestScore from the local storage
     userBestScore = localStorage.getItem("userBestScore");
-    document.getElementById("best-score").innerHTML = userBestScore;
+    if (userBestScore != null) { // If it's not the first time the player has loaded the page
+        document.getElementById("best-score").innerHTML = userBestScore;
+    }
 
     // Interactions with the screen
     $(".restart-button").click(newGame);
