@@ -2,6 +2,7 @@ $(document).ready(function (e) {
     e.stopPropagation;
 
     // Set the variables
+    var userBestScore = 0;
     var removals = 0;
     var createdTile;
     var centerBackground;
@@ -15,6 +16,8 @@ $(document).ready(function (e) {
     var removeSound = document.getElementById("removeSound");
     var gameOverSound = document.getElementById("gameOverSound");
     var soundOn = true;
+    var onPlaying = true;
+    var onPause = false;
 
     // setTimeout IDs
     var removeRemovesId = 0;
@@ -26,7 +29,6 @@ $(document).ready(function (e) {
     var newTileFinished = true;
     var newFutureTileFinished = true;
     var checkGameOverFinished = true;
-
 
     var futureColor;
     var doubleColor;
@@ -55,6 +57,10 @@ $(document).ready(function (e) {
 
     // Automatically start a game
     newGame();
+
+    // Automatically update the bestScore from the local storage
+    userBestScore = localStorage.getItem("userBestScore");
+    document.getElementById("best-score").innerHTML = userBestScore;
 
     // Interactions with the screen
     $(".restart-button").click(newGame);
@@ -134,6 +140,28 @@ $(document).ready(function (e) {
         }
     }
 
+    swooshSound.onPlaying = function () {
+        onPlaying = true;
+        onPause = false;
+    };
+
+    swooshSound.onPause = function () {
+        onPlaying = false;
+        onPause = true;
+    }
+
+    function playSound() {
+        if (swooshSound.paused && !onPlaying) {
+            swooshSound.play();
+        }
+    }
+
+    function pauseSound() {
+        if (!swooshSound.paused && !onPause) {
+            swooshSound.play();
+        }
+    }
+
 /* These events happen when you press a key */
 
     // Make a move
@@ -186,7 +214,7 @@ $(document).ready(function (e) {
 
             // Play a swoosh sound
             if (soundOn) {
-                swooshSound.play();
+                playSound();
             }
 
             newTileId = setTimeout(function () {
@@ -202,8 +230,10 @@ $(document).ready(function (e) {
         document.getElementById("gameover-score").innerHTML = parseInt(document.getElementById("gameover-score").innerHTML) + removals;
 
         // Update the best score
-        if (parseInt(document.getElementById("best-score").innerHTML) <= parseInt(document.getElementById("current-score").innerHTML)) {
+        if (parseInt(document.getElementById("best-score").innerHTML) < parseInt(document.getElementById("current-score").innerHTML)) {
             document.getElementById("best-score").innerHTML = parseInt(document.getElementById("current-score").innerHTML);
+            userBestScore = parseInt(document.getElementById("current-score").innerHTML);
+            localStorage.setItem("userBestScore", userBestScore);
         }
 
         // Create a new future tile color
@@ -488,6 +518,9 @@ $(document).ready(function (e) {
         // End the queue of the center tile
         $("#center-tile").clearQueue();
 
+        // Hurry the newCenterTile function if the player plays too quickly
+        document.getElementById("center-tile").style.opacity = 1;
+
         // Hurry the newTile function if the player plays too quickly
         clearTimeout(newTileId);
         if (newTileFinished == false ) {
@@ -510,7 +543,7 @@ $(document).ready(function (e) {
         checkGameOverFinished = false;
 
         // Finish the sounds
-        swooshSound.pause();
+        pauseSound();
         swooshSound.currentTime = 0;
         removeSound.pause();
         removeSound.currentTime = 0;

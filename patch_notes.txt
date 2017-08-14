@@ -74,3 +74,14 @@ Beta-1.1:
 
 FIXES
 * Fixed a bug where you could lose with one tile left (For real this time?)
+
+-------------------------
+
+
+Beta-1.2:
+
+UPDATES
+* Your best score will no longer reset when you refresh the page
+
+FIXES
+* Fixed a bug where the center tile could disappear
