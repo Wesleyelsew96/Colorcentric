@@ -458,6 +458,13 @@ a.keep-playing-button {
   border-radius: 1px;
 }
 
+#mobile {
+  font-style: italic;
+  font-size: 10px;
+  display: none;
+  text-align: center;
+}
+
 #game-explanation {
   margin-top: 25px;
 }
