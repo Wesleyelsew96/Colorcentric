@@ -152,6 +152,27 @@ $(document).ready(function (e) {
 
     // Make a move
     $(document).keydown(function (e) {
+        makeAMove(e);
+    });
+
+    $(window).on("swipeleft", function (e) {
+        e.keyCode = 37;
+        makeAMove(e);
+    });
+    $(window).on("swiperight", function (e) {
+        makeAMove(e);
+        e.keyCode = 39
+    });
+    $(window).on("swipedown", function (e) {
+        makeAMove(e);
+        e.keyCode = 40;
+    });
+    $(window).on("swipeup", function (e) {
+        makeAMove(e);
+        e.keyCode = 38;
+    });
+
+    function makeAMove(e) {
 
         // Prevent scrolling
         e.stopPropagation();
@@ -248,7 +269,7 @@ $(document).ready(function (e) {
             checkGameOver();
             checkGameOverFinished = true;
         }, 100);
-    });
+    }
 
 /* These events happen when you move a tile */
 

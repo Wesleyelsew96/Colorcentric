@@ -97,3 +97,10 @@ FIXES
 * Fixed a bug where the center tile would not change fast enough, allowing more tiles to be cleared
 
 -------------------------
+
+Beta-3
+
+UPDATES
+* Mobile support!
+
+-------------------------
