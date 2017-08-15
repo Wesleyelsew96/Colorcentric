@@ -20,8 +20,6 @@ $(document).ready(function (e) {
     if (window.matchMedia("(min-width: 520px)").matches) {
         shiftValue = "121.25px";
     } else {
-        document.getElementById("mobile").style.display = "block";
-        document.getElementById("game-explanation").style.display = "none";
         shiftValue = "72.8px";
     }
 

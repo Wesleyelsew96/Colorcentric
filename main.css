@@ -29,6 +29,10 @@ h1.title {
   margin-bottom: 15px;
 }
 
+#update {
+    margin-bottom: 20px;
+}
+
 #largeColorcentric {
     font-size: 18px;
     vertical-align: 50px;
@@ -467,6 +471,7 @@ a.keep-playing-button {
 
 #game-explanation {
   margin-top: 25px;
+  display: block;
 }
 
 ul {
@@ -498,6 +503,11 @@ li {
     text-align: center;
     margin: 0;
     margin-bottom: 15px;
+  }
+
+  #update {
+    margin-bottom: 0px;
+    display: none;
   }
 
   #container {
@@ -801,8 +811,16 @@ li {
     border-width: 2px;
   }
 
+  #mobile {
+    font-style: italic;
+    font-size: 10px;
+    display: block;
+    text-align: center;
+  }
+
   #game-explanation {
     margin-top: 15px;
+    display: none;
   }
 
   ul {

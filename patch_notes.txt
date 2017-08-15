@@ -111,3 +111,10 @@ FIXED
 * Fixed a bug where the swiping was enabled on the entire page instead of just the game
 
 -------------------------
+
+Beta-3.2:
+
+UPDATES
+* Cleaned up the UI information for mobile and desktop versions
+
+-------------------------
