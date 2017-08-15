@@ -104,3 +104,10 @@ UPDATES
 * Mobile support!
 
 -------------------------
+
+Beta-3.1:
+
+FIXED
+* Fixed a bug where the swiping was enabled on the entire page instead of just the game
+
+-------------------------

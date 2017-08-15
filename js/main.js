@@ -25,7 +25,8 @@ $(document).ready(function (e) {
         shiftValue = "72.8px";
     }
 
-    var mc = new Hammer(document);
+    var gameContainer = document.getElementById("game-container");
+    var mc = new Hammer(gameContainer);
     mc.get('swipe').set({ direction: Hammer.DIRECTION_ALL });
 
     // setTimeout IDs

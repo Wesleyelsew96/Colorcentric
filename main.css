@@ -167,7 +167,7 @@ hr {
   margin-bottom: 16px;
 }
 
-.game-container {
+#game-container {
   margin: 0;
   display: block;
   position: static;
@@ -592,7 +592,7 @@ li {
   hr {
   }
 
-  .game-container {
+  #game-container {
     width: 300px;
     height: 300px;
   }
