@@ -16,16 +16,24 @@ $(document).ready(function (e) {
     var removeSound = document.getElementById("removeSound");
     var gameOverSound = document.getElementById("gameOverSound");
     var soundOn = true;
+    var shiftValue = "";
+    if (window.matchMedia("(min-width: 520px)").matches) {
+        shiftValue = "121.25px";
+    } else {
+        shiftValue = "72.8px";
+    }
 
     // setTimeout IDs
     var removeRemovesId = 0;
     var newTileId = 0;
     var newFutureTileId = 0;
+    var newCenterTileId = 0;
     var checkGameOverId = 0;
 
     // setTimeout trackers
     var newTileFinished = true;
     var newFutureTileFinished = true;
+    var newCenterTileFinished = true;
     var checkGameOverFinished = true;
 
     var futureColor;
@@ -178,18 +186,25 @@ $(document).ready(function (e) {
             removeSound.play();
         }
 
+        // Remove the bonus removals
         removeRemovesId = setTimeout(function () {
             removeRemoves();
         }, 100);
 
         // Check to see if a new center tile is needed
         if (createNewCenterTile) {
-            newCenterTile();
+            newCenterTileFinished = false;
+            newCenterTileId = setTimeout(function () {
+                newCenterTile();
+                newCenterTileFinished = true;
+            }, 100);
             createNewCenterTile = false;
+        } else {
+            newCenterTileFinished = true;
         }
 
         if (JSON.stringify(newTileArray) != JSON.stringify(tileArray)) {
-
+            newTileFinished = false;
             // Play a swoosh sound
             if (soundOn) {
                 swooshSound.play();
@@ -220,7 +235,7 @@ $(document).ready(function (e) {
             newFutureTileId = setTimeout(function () {
                 newFutureTile();
                 newFutureTileFinished = true;
-            }, 101);
+            }, 100);
         } else {
             newFutureTileFinished = true;
         }
@@ -232,7 +247,7 @@ $(document).ready(function (e) {
         checkGameOverId = setTimeout(function () {
             checkGameOver();
             checkGameOverFinished = true;
-        }, 102);
+        }, 100);
     });
 
 /* These events happen when you move a tile */
@@ -356,7 +371,7 @@ $(document).ready(function (e) {
         }
 
         // This is the animation
-        $(tileArray[row][column]).animate({ "top": "+=121.25px" }, 80, "linear", function () {
+        $(tileArray[row][column]).animate({ "top": "+=" + shiftValue }, 80, "linear", function () {
 
             //This happens at the end of each tile's movement
             if (checkRemove(row + 1, column)) {
@@ -384,7 +399,7 @@ $(document).ready(function (e) {
         }
 
         // This is the animation
-        $(tileArray[row][column]).animate({ "top": "-=121.25px" }, 80, "linear", function () {
+        $(tileArray[row][column]).animate({ "top": "-=" +  shiftValue }, 80, "linear", function () {
 
             // This happens at the end of each tile's movement
             if (checkRemove(row - 1, column)) {
@@ -412,7 +427,7 @@ $(document).ready(function (e) {
         }
 
         // This is the animation
-        $(tileArray[row][column]).animate({ "left": "-=121.25px" }, 80, "linear", function () {
+        $(tileArray[row][column]).animate({ "left": "-=" + shiftValue }, 80, "linear", function () {
 
             // This happens at the end of each tile's movement
             if (checkRemove(row, column - 1)) {
@@ -440,7 +455,7 @@ $(document).ready(function (e) {
         }
 
         // This is the animation
-        $(tileArray[row][column]).animate({ "left": "+=121.25px" }, 80, "linear", function () {
+        $(tileArray[row][column]).animate({ "left": "+=" + shiftValue }, 80, "linear", function () {
 
             // This happens at the end of each tile's movement
             if (checkRemove(row, column + 1)) {
@@ -495,9 +510,13 @@ $(document).ready(function (e) {
         removeRemoves();
 
         // End the queue of the center tile
-        $("#center-tile").clearQueue();
+        //$("#center-tile").clearQueue();
 
         // Hurry the newCenterTile function if the player plays too quickly
+        clearTimeout(newCenterTileId);
+        if (newCenterTileFinished == false) {
+            newCenterTile();
+        }
         document.getElementById("center-tile").style.opacity = 1;
         document.getElementById("center-tile").style.display = "inline";
 
@@ -580,7 +599,7 @@ $(document).ready(function (e) {
 
             // Access the tile with jquery
             var $activeTile = $("#" + createdTile.id);
-            $activeTile.hide().fadeIn("fast");
+            $activeTile.hide().fadeIn(100);
 
             // Make the new tile the same color as the old future tile
             createdTile.style.backgroundColor = futureColor;
@@ -624,11 +643,11 @@ $(document).ready(function (e) {
     function newFutureTile() {
 
         // Access the tile with jquery
-        var $activeTile = $("#future-tile");
+        var $futureTile = $("#future-tile");
         if (freshStart) {
-            $activeTile.fadeIn("fast");
+            $futureTile.fadeIn(0);
         } else {
-            $activeTile.hide().fadeIn("fast");
+            $futureTile.hide().fadeIn(0);
         }
 
         // Pick a color for the future tile
@@ -651,18 +670,16 @@ $(document).ready(function (e) {
     function newCenterTile() {
 
         // Access the tile with jquery
-        var $activeTile = $("#center-tile");
+        var $centerTile = $("#center-tile");
         if (freshStart) {
-            $activeTile.fadeIn("fast");
+            $centerTile.fadeIn(0);
         } else {
-            $activeTile.delay(100).hide(0).fadeIn("fast");
+            $centerTile.hide().fadeIn(0);
         }
         document.getElementById("center-tile").style.display = "inline";
 
         // Assign the picked color to the center tile
-        setTimeout(function () {
-            document.getElementById("center-tile").style.backgroundColor = futureColor;
-        }, 100);
+        document.getElementById("center-tile").style.backgroundColor = futureColor;
     }
 
     // Pick a random color from the available options

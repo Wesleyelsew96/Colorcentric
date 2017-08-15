@@ -14,7 +14,7 @@ body {
   font-size: 18px;
 }
 
-.container {
+#container {
   width: 500px;
   margin: 0 auto;
   display: block;
@@ -75,6 +75,23 @@ h1.title {
   padding-left: 15px;
   padding-right: 15px;
   padding-top: 33px;
+  font-size: 30px;
+  font-weight: 900;
+  font-family: "Amatic", Arial, sans-serif;
+}
+
+#future-tile {
+  position: absolute;
+  left: 15px;
+  top: 15px;
+  width: 76.25px;
+  height: 76.25px;
+  border-radius: 3px;
+  border: 3px double lightgrey;
+  background: #dbccbd;
+  color: ghostwhite;
+  text-align: center;
+  padding: 15px;
   font-size: 30px;
   font-weight: 900;
   font-family: "Amatic", Arial, sans-serif;
@@ -148,73 +165,6 @@ hr {
   border-bottom: 1px solid #d8d4d0;
   margin-top: 20px;
   margin-bottom: 16px;
-}
-
-/* Keyframe stuff */
-@-webkit-keyframes move-up {
-  0% {
-    top: 25px;
-    opacity: 1;
-  }
-
-  100% {
-    top: -50px;
-    opacity: 0;
-  }
-}
-
-@-moz-keyframes move-up {
-  0% {
-    top: 25px;
-    opacity: 1;
-  }
-
-  100% {
-    top: -50px;
-    opacity: 0;
-  }
-}
-
-@keyframes move-up {
-  0% {
-    top: 25px;
-    opacity: 1;
-  }
-
-  100% {
-    top: -50px;
-    opacity: 0;
-  }
-}
-
-@-webkit-keyframes fade-in {
-  0% {
-    opacity: 0;
-}
-
-  100% {
-    opacity: 1;
-  }
-}
-
-@-moz-keyframes fade-in {
-  0% {
-    opacity: 0;
-  }
-
-  100% {
-    opacity: 1;
-  }
-}
-
-@keyframes fade-in {
-  0% {
-    opacity: 0;
-  }
-
-  100% {
-    opacity: 1;
-  }
 }
 
 .game-container {
@@ -413,23 +363,6 @@ a.keep-playing-button {
   z-index: 2;
 }
 
-#future-tile {
-  position: absolute;
-  left: 15px;
-  top: 15px;
-  width: 76.25px;
-  height: 76.25px;
-  border-radius: 3px;
-  border: 3px double lightgrey;
-  background: #dbccbd;
-  color: ghostwhite;
-  text-align: center;
-  padding: 15px;
-  font-size: 30px;
-  font-weight: 900;
-  font-family: "Amatic", Arial, sans-serif;
-}
-
 #center-tile {
   position: absolute;
   left: 136.25px;
@@ -544,287 +477,339 @@ li {
 }
 
 
-
-
-@-webkit-keyframes appear {
-  0% {
-    opacity: 0;
-    -webkit-transform: scale(0);
-    -moz-transform: scale(0);
-    -ms-transform: scale(0);
-    transform: scale(0);
-  }
-
-  100% {
-    opacity: 1;
-    -webkit-transform: scale(1);
-    -moz-transform: scale(1);
-    -ms-transform: scale(1);
-    transform: scale(1);
-  }
-}
-
-@-moz-keyframes appear {
-  0% {
-    opacity: 0;
-    -webkit-transform: scale(0);
-    -moz-transform: scale(0);
-    -ms-transform: scale(0);
-    transform: scale(0);
-  }
-
-  100% {
-    opacity: 1;
-    -webkit-transform: scale(1);
-    -moz-transform: scale(1);
-    -ms-transform: scale(1);
-    transform: scale(1);
-  }
-}
-
-@keyframes appear {
-  0% {
-    opacity: 0;
-    -webkit-transform: scale(0);
-    -moz-transform: scale(0);
-    -ms-transform: scale(0);
-    transform: scale(0);
-  }
-
-  100% {
-    opacity: 1;
-    -webkit-transform: scale(1);
-    -moz-transform: scale(1);
-    -ms-transform: scale(1);
-    transform: scale(1);
-  }
-}
-
-
-
-@-webkit-keyframes pop {
-  0% {
-    -webkit-transform: scale(0);
-    -moz-transform: scale(0);
-    -ms-transform: scale(0);
-    transform: scale(0);
-  }
-
-  50% {
-    -webkit-transform: scale(1.2);
-    -moz-transform: scale(1.2);
-    -ms-transform: scale(1.2);
-    transform: scale(1.2);
-  }
-
-  100% {
-    -webkit-transform: scale(1);
-    -moz-transform: scale(1);
-    -ms-transform: scale(1);
-    transform: scale(1);
-  }
-}
-
-@-moz-keyframes pop {
-  0% {
-    -webkit-transform: scale(0);
-    -moz-transform: scale(0);
-    -ms-transform: scale(0);
-    transform: scale(0);
-  }
-
-  50% {
-    -webkit-transform: scale(1.2);
-    -moz-transform: scale(1.2);
-    -ms-transform: scale(1.2);
-    transform: scale(1.2);
-  }
-
-  100% {
-    -webkit-transform: scale(1);
-    -moz-transform: scale(1);
-    -ms-transform: scale(1);
-    transform: scale(1);
-  }
-}
-
-@keyframes pop {
-  0% {
-    -webkit-transform: scale(0);
-    -moz-transform: scale(0);
-    -ms-transform: scale(0);
-    transform: scale(0);
-  }
-
-  50% {
-    -webkit-transform: scale(1.2);
-    -moz-transform: scale(1.2);
-    -ms-transform: scale(1.2);
-    transform: scale(1.2);
-  }
-
-  100% {
-    -webkit-transform: scale(1);
-    -moz-transform: scale(1);
-    -ms-transform: scale(1);
-    transform: scale(1);
-  }
-}
-
-
-@media screen and (max-width: 520px) {
+@media screen and (min-width: 320px) and (max-width: 520px) {
   html, body {
-    font-size: 15px;
-  }
-
-  body {
-    margin: 20px 0;
-    padding: 0 20px;
+    margin: 0 0;
+    padding: 0;
+    font-family: Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 11px;
   }
 
   h1.title {
-    font-size: 27px;
-    margin-top: 15px;
+    font-size: 60px;
+    font-weight: 900;
+    text-align: center;
+    margin: 0;
+    margin-bottom: 15px;
   }
 
-  .container {
-    width: 280px;
+  #container {
+    width: 300px;
     margin: 0 auto;
   }
 
-  .current-container, .best-container, restart.container {
-    margin-top: 0;
-    padding: 15px 10px;
-    min-width: 40px;
+  .current-container, .best-container, .restart-button {
+    font-size: 12px;
+    height: 16px;
+    padding: 5px 10px;
   }
 
-  .restart-button {
-    width: 42%;
-    padding: 0;
-    display: inline-block;
-    box-sizing: border-box;
-    margin-top: 2px;
+  #largeColorcentric {
+    font-size: 14px;
+    vertical-align: 30px;
+  }
+
+  #smallColorcentric {
+    font-size: 6px;
+    vertical-align: 6px;
+  }
+
+  #logo {
+    font-size: 14px;
+  }
+
+  .scoreboard-container {
+  }
+
+  .left-scoreboard-container {
+    width: 100px;
+  }
+
+  .center-scoreboard-container {
+    height: 58.8px;
+    margin-left: 109.8px;
+    margin-right: 109.8px;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 22.8px;
+    font-size: 20px;
+  }
+
+  #future-tile {
+    left: 6.8px;
+    top: 6.8px;
+    width: 60px;
+    height: 44px;
+    border-radius: 2px;
+    border: 2px, double, lightgrey;
+    padding-top: 16px;
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    font-size: 20px;
+  }
+
+  .right-scoreboard-container {
+    width: 100px;
+    height: 100%;
+    right: 0;
+    top: 0;
+  }
+
+  .current-container, .best-container, .restart-button {
+  }
+
+  .current-container {
+  }
+
+  #sound-toggle {
+    max-width: 50%;
+    max-height: 50%;
+    border-radius: 50%;
+    bottom: 50px;
+    left: 15px;
+  }
+
+  .best-container {
+    background: #bbada0;
+    bottom: 54px;
+    right: 0px;
+  }
+
+  p {
+  }
+
+  a {
+  }
+
+  hr {
   }
 
   .game-container {
-    margin-top: 17px;
-    position: static;
-    padding: 10px;
-    cursor: default;
-    -webkit-touch-callout: none;
-    -ms-touch-callout: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    -ms-touch-action: none;
-    touch-action: none;
-    background: #bbada0;
-    border-radius: 6px;
-    width: 280px;
-    height: 280px;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
+    width: 300px;
+    height: 300px;
   }
 
-  .game-container #postgame-message {
-    display: none;
-    background: rgba(238, 228, 218, 0.5);
-    z-index: 100;
-    text-align: center;
-    -webkit-animation: fade-in 800ms ease 1200ms;
-    -moz-animation: fade-in 800ms ease 1200ms;
-    animation: fade-in 800ms ease 1200ms;
-    -webkit-animation-fill-mode: both;
-    -moz-animation-fill-mode: both;
-    animation-fill-mode: both;
+  #postgame-message {
+    width: 300px;
+    height: 300px;
   }
 
-  .game-container #postgame-message {
-    font-size: 60px;
-    font-weight: bold;
-    height: 60px;
-    line-height: 60px;
+  #game-over {
+    margin-top: 150px;
+    font-size: 40px;
   }
 
-  .lower {
-    display: block;
-  }
-
-  .game-container #postgame-message a {
-    display: block;
-    background: #8f7a66;
-    border-radius: 3px;
-    padding: 0 20px;
-    text-decoration: none;
-    color: #f9f6f2;
-    height: 40px;
-    line-height: 42px;
-    margin-left: 9px;
-  }
-
-  .game-container #postgame-message a.keep-playing-button {
-    display: none;
-  }
-
-  .game-container #postgame-message.game-won {
-    background: rgba(237, 194, 46, 0.5);
-    color: #f9f6f2;
-  }
-
-  .game-container #postgame-message.game-won a.keep-playing-button {
-    display: block;
-  }
-
-  .game-container #postgame-message.game-won, .game-container #postgame-message.game-over {
-    display: block;
+  #endgame-score {
+    font-size: 20px;
   }
 
   #grid-container {
-    position: absolute;
-    z-index: 1;
-  }
-
-  .grid-row {
-    margin-bottom: 10px;
-  }
-
-  .grid-row:last-child {
-    margin-bottom: 0;
-  }
-
-  .grid-row:after {
-    content: "";
-    display: block;
-    clear: both;
   }
 
   .grid-cell {
-    width: 57.5px;
-    height: 57.5px;
-    margin-right: 10px;
-    float: left;
-    border-radius: 3px;
-    background: rgba(238, 228, 218, 0.35);
+    width: 64px;
+    height: 64px;
   }
 
-  .grid-cell:last-child {
-      margin-right: 0;
+  #grid-cell-1 {
+    top: 6.8px;
+    left: 6.8px;
+    border-width: 2px;
+  }
+
+  #grid-cell-2 {
+    top: 8.8px;
+    left: 81.6px;
+  }
+
+  #grid-cell-3 {
+    top: 8.8px;
+    left: 154.4px;
+  }
+
+  #grid-cell-4 {
+    top: 6.8px;
+    left: 225.2px;
+    border-width: 2px;
+  }
+
+  #grid-cell-5 {
+    top: 81.6px;
+    left: 8.8px;
+  }
+
+  #grid-cell-6 {
+    top: 81.6px;
+    left: 81.6px;
+  }
+
+  #grid-cell-7 {
+    top: 81.6px;
+    left: 154.4px;
+  }
+
+  #grid-cell-8 {
+    top: 81.6px;
+    left: 227.2px;
+  }
+
+  #grid-cell-9 {
+    top: 154.4px;
+    left: 8.8px;
+  }
+
+  #grid-cell-10 {
+    top: 154.4px;
+    left: 81.6px;
+  }
+
+  #grid-cell-11 {
+    top: 154.4px;
+    left: 154.4px;
+  }
+
+  #grid-cell-12 {
+    top: 154.4px;
+    left: 227.2px;
+  }
+
+  #grid-cell-13 {
+    top: 225.2px;
+    left: 6.8px;
+    border-width: 2px;
+  }
+
+  #grid-cell-14 {
+    top: 227.2px;
+    left: 81.6px;
+  }
+
+  #grid-cell-15 {
+    top: 227.2px;
+    left: 154.4px;
+  }
+
+  #grid-cell-16 {
+    top: 225.2px;
+    left: 225.2px;
+    border-width: 2px;
   }
 
   #tile-container {
-    position: absolute;
-    z-index: 2;
   }
 
-  #postgame-message p {
-    font-size: 30px !important;
-    height: 30px !important;
-    line-height: 30px !important;
-    margin-top: 90px !important;
+  .tile {
+    width: 64px;
+    height: 64px;
   }
 
-  #postgame-message .lower {
-    margin-top: 30px !important;
+  #center-tile {
+    left: 81.6px;
+    top: 81.6px;
+    width: 136.8px;
+    height: 136.8px;
+    border: 3px;
   }
+
+  #tile-1 {
+    top: 8.8px;
+    left: 8.8px;
+  }
+
+  #tile-2 {
+    top: 8.8px;
+    left: 81.6px;
+  }
+
+  #tile-3 {
+    top: 8.8px;
+    left: 154.4px;
+  }
+
+  #tile-4 {
+    top: 8.8px;
+    left: 227.2px;
+  }
+
+  #tile-5 {
+    top: 81.6px;
+    left: 8.8px;
+  }
+
+  #tile-6 {
+    top: 81.6px;
+    left: 81.6px;
+  }
+
+  #tile-7 {
+    top: 81.6px;
+    left: 154.4px;
+  }
+
+  #tile-8 {
+    top: 81.6px;
+    left: 227.2px;
+  }
+
+  #tile-9 {
+    top: 154.4px;
+    left: 8.8px;
+  }
+
+  #tile-10 {
+    top: 154.4px;
+    left: 81.6px;
+  }
+
+  #tile-11 {
+    top: 154.4px;
+    left: 154.4px;
+  }
+
+  #tile-12 {
+    top: 154.4px;
+    left: 227.2px;
+  }
+
+  #tile-13 {
+    top: 227.2px;
+    left: 8.8px;
+    border-width: 2px;
+  }
+
+  #tile-14 {
+    top: 227.2px;
+    left: 81.6px;
+  }
+
+  #tile-15 {
+    top: 227.2px;
+    left: 154.4px;
+  }
+
+  #tile-16 {
+    top: 227.2px;
+    left: 227.2px;
+    border-width: 2px;
+  }
+
+  #game-explanation {
+    margin-top: 15px;
+  }
+
+  ul {
+    padding-left: 15px;
+  }
+
+  li {
+    line-height: 120%;
+  }
+
+  #created-by {
+    font-size: 10px;
+    font-style: italic;
+    text-align: center;
+  }
+
 }

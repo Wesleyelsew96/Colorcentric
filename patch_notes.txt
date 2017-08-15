@@ -85,3 +85,15 @@ UPDATES
 
 FIXES
 * Fixed a bug where the center tile could disappear
+
+-------------------------
+
+Beta-2:
+
+UPDATES
+* Now fits in a mobile screen (Full mobile support coming soon!)
+
+FIXES
+* Fixed a bug where the center tile would not change fast enough, allowing more tiles to be cleared
+
+-------------------------
