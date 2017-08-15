@@ -23,6 +23,9 @@ $(document).ready(function (e) {
         shiftValue = "72.8px";
     }
 
+    var mc = new Hammer(document);
+    mc.get('swipe').set({ direction: Hammer.DIRECTION_ALL });
+
     // setTimeout IDs
     var removeRemovesId = 0;
     var newTileId = 0;
@@ -153,29 +156,29 @@ $(document).ready(function (e) {
     // Make a move
     $(document).keydown(function (e) {
         makeAMove(e);
+        e.stopPropagation();
     });
 
-    $(window).on("swipeleft", function (e) {
+    mc.on("swipeleft", function (e) {
         e.keyCode = 37;
         makeAMove(e);
     });
-    $(window).on("swiperight", function (e) {
+    mc.on("swiperight", function (e) {
+        e.keyCode = 39;
         makeAMove(e);
-        e.keyCode = 39
     });
-    $(window).on("swipedown", function (e) {
-        makeAMove(e);
+    mc.on("swipedown", function (e) {
         e.keyCode = 40;
-    });
-    $(window).on("swipeup", function (e) {
         makeAMove(e);
+    });
+    mc.on("swipeup", function (e) {
         e.keyCode = 38;
+        makeAMove(e);
     });
 
     function makeAMove(e) {
 
         // Prevent scrolling
-        e.stopPropagation();
         e.preventDefault();
 
         // Finish any old animations
