@@ -8,4 +8,4 @@ I created the game in July and August, 2017, with the (at the time) sole purpose
 
 Thanks for playing!
 
--Wesley
+- Wesley
